@@ -72,7 +72,7 @@ public class CRUDPresentacionItemController extends HttpServlet {
         map.put("nombre", request.getParameter("nombre"));
         map.put("rendimiento", request.getParameter("rendimiento"));
         map.put("precio_costo", request.getParameter("precio_costo"));
-
+        
         respuesta = PresentacionItemService.create(map, request, response);
 
         if (respuesta.getStatus() < 200 || respuesta.getStatus() > 299) {
