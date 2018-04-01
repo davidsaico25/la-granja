@@ -16,13 +16,13 @@
                             <input class="form-control" id="password" type="password" placeholder="contrasena">
                         </div>
                         <button id="btnLogin" type="submit" class="btn btn-primary btn-block">Entrar</button>
-                        <img id="loading" src="/la-granja/resources/images/ajax-loader.gif" style="display: none;"/>
+                        <img id="loading" src="${pageContext.request.contextPath}/resources/images/ajax-loader.gif" style="display: none;"/>
                     </form>
                 </div>
             </div>
         </div>
     </jsp:attribute>
     <jsp:attribute name="scripts">
-        <script type="text/javascript" src="/la-granja/resources/js/login.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/login.js"></script>
     </jsp:attribute>
 </t:template>
