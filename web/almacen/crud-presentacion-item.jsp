@@ -2,9 +2,9 @@
 <%@taglib tagdir="/WEB-INF/tags/" prefix="t"%>
 <t:template-user>
     <jsp:attribute name="head">
-        <link href="/la-granja/resources/css/upload-file.css" rel="stylesheet" type="text/css">
-        <link href="/la-granja/resources/vendor/dropzone/css/dropzone.css" rel="stylesheet" type="text/css">
-        <link href="/la-granja/resources/css/upload-file2.css" rel="stylesheet" type="text/css">
+        <link href="${pageContext.request.contextPath}/resources/css/upload-file.css" rel="stylesheet" type="text/css">
+        <link href="${pageContext.request.contextPath}/resources/vendor/dropzone/css/dropzone.css" rel="stylesheet" type="text/css">
+        <link href="${pageContext.request.contextPath}/resources/css/upload-file2.css" rel="stylesheet" type="text/css">
     </jsp:attribute>
     <jsp:attribute name="body">
         <div class="content-wrapper">
@@ -18,10 +18,10 @@
                             ${message}
                         </c:if>
 
-                        <form id="formCRUD" action="/la-granja/almacen/crudPresentacionItem.do" method="POST" accept-charset=utf-8>
-                            <input name="action" value="${action}" hidden="hidden">
+                        <form id="formCRUD" action="${pageContext.request.contextPath}/almacen/crudPresentacionItem.do" method="POST" accept-charset=utf-8>
+                            <input name="action" value="${presentacion_item_id == null ? 'create' : 'update'}" hidden="hidden">
                             <input name="item_id" value="${item_id != null ? item_id : map.item_id}" hidden="hidden">
-                            <input name="presentacion_item_id" value="${presentacionItem.id}" hidden="hidden">
+                            <input name="presentacion_item_id" value="${presentacion_item_id}" hidden="hidden">
                             <div class="form-group">
                                 <label for="codigo_barra">Codigo Barra</label>
                                 <input class="form-control" id="codigo_barra" name="codigo_barra" value="${map.codigo_barra != null ? map.codigo_barra : presentacionItem.codigo_barra}" type="text" placeholder="Codigo Barra">
@@ -38,13 +38,21 @@
                                 <label for="precio_costo">Precio Costo</label>
                                 <input class="form-control" id="precio_costo" name="precio_costo" value="${map.precio_costo != null ? map.precio_costo : presentacionItem.precio_costo}" type="number" placeholder="Precio Costo">
                             </div>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input id="estado" name="estado" type="checkbox" value="A" checked="checked">
+                                    <label class="form-check-label" for="estado">
+                                        Activo
+                                    </label>
+                                </div>
+                            </div>
                             <button id="btnCreatePresentacionItem" class="btn btn-primary" type="submit">Guardar</button>
                             <img id="loading" src="/la-granja/resources/images/ajax-loader.gif" style="display: none;"/>
                         </form>
                     </div>
 
 
-                    <div class="col-md-6" ${presentacionItem == null ? "hidden" : ''}>
+                    <div class="col-md-6" ${presentacion_item_id == null ? "hidden" : ''}>
                         <div id="presentacionInsumoImagen">
                             <c:if test="${presentacionItem.imagen != null}">
                                 <img src="http://localhost:3000/api/presentacion_item/get-image/${presentacionItem.imagen}" style="height:500px; width:500px"/>
@@ -110,22 +118,20 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
     </jsp:attribute>
     <jsp:attribute name="scripts">
-        <script type="text/javascript" src="/la-granja/resources/js/almacen/create-presentacion-item.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/almacen/crud-presentacion-item.js"></script>
 
-        <script src="/la-granja/resources/vendor/dropzone/js/dropzone.js"></script>
-        <script src="/la-granja/resources/js/global.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/vendor/dropzone/js/dropzone.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/js/global.js"></script>
         <script type="text/javascript">
-                                var imageUploadURL = URLRest + "presentacion_item/upload-image/${presentacionItem.id}";
-                                var paramNameFile = "image";
-                                var acceptedFile = "image/*";
+            var imageUploadURL = URLRest + "presentacion_item/upload-image/${presentacionItem.id}";
+            var paramNameFile = "image";
+            var acceptedFile = "image/*";
         </script>
-        <script src="/la-granja/resources/js/upload-file.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/js/upload-file.js"></script>
     </jsp:attribute>
 </t:template-user>
