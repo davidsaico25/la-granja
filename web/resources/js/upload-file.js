@@ -55,7 +55,8 @@ $(document).ready(function () {
     
     myDropzone.on("complete", function (file) {
         myDropzone.removeFile(file);
-        location.reload();
+        //location.reload();
+        window.location.replace(url);
     });
 
     myDropzone.on("error", function (file, errorMessage) {

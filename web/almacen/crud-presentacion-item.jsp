@@ -15,16 +15,24 @@
                 <div class="row">
                     <div class="col-md-6">
                         <c:if test="${message != null}">
-                            ${message}
+                            <div class="alert alert-${status}" role="alert">
+                                <h5>${message}</h5>
+                                <c:if test="${errors != null}">
+                                    <c:forEach items="${errors}" var="error">
+                                        ${error}<br/>
+                                    </c:forEach>
+                                </c:if>
+                            </div>
                         </c:if>
 
                         <form id="formCRUD" action="${pageContext.request.contextPath}/almacen/crudPresentacionItem.do" method="POST" accept-charset=utf-8>
-                            <input name="action" value="${presentacion_item_id == null ? 'create' : 'update'}" hidden="hidden">
-                            <input name="item_id" value="${item_id != null ? item_id : map.item_id}" hidden="hidden">
+                            <input name="action" value="${action}" hidden="hidden">
+                            <input name="item_id" value="${item_id}" hidden="hidden">
                             <input name="presentacion_item_id" value="${presentacion_item_id}" hidden="hidden">
+                            <input name="imagen" value="${imagen}" hidden="hidden">
                             <div class="form-group">
                                 <label for="codigo_barra">Codigo Barra</label>
-                                <input class="form-control" id="codigo_barra" name="codigo_barra" value="${map.codigo_barra != null ? map.codigo_barra : presentacionItem.codigo_barra}" type="text" placeholder="Codigo Barra">
+                                <input class="form-control" id="codigo_barra" name="codigo_barra" value="${map.codigo_barra != null ? map.codigo_barra : presentacionItem.codigo_barra}" type="text" placeholder="Codigo Barra" ${presentacion_item_id != null ? 'readonly' : ''}>
                             </div>
                             <div class="form-group">
                                 <label for="nombre">Nombre</label>
@@ -54,9 +62,7 @@
 
                     <div class="col-md-6" ${presentacion_item_id == null ? "hidden" : ''}>
                         <div id="presentacionInsumoImagen">
-                            <c:if test="${presentacionItem.imagen != null}">
-                                <img src="http://localhost:3000/api/presentacion_item/get-image/${presentacionItem.imagen}" style="height:500px; width:500px"/>
-                            </c:if>
+                            <img src="http://localhost:3000/api/presentacion_item/get-image/${imagen != null ? imagen : 'item.png'}" class="img-fluid"/>
                         </div>
 
                         <div id="actions" class="row">
@@ -128,9 +134,10 @@
         <script src="${pageContext.request.contextPath}/resources/vendor/dropzone/js/dropzone.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/global.js"></script>
         <script type="text/javascript">
-            var imageUploadURL = URLRest + "presentacion_item/upload-image/${presentacionItem.id}";
+            var imageUploadURL = URLRest + "presentacion_item/upload-image/${presentacion_item_id}";
             var paramNameFile = "image";
             var acceptedFile = "image/*";
+            var url = URLorigin + "/la-granja/almacen/crudPresentacionItem.do?id=${presentacion_item_id}";
         </script>
         <script src="${pageContext.request.contextPath}/resources/js/upload-file.js"></script>
     </jsp:attribute>

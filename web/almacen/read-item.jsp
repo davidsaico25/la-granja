@@ -52,7 +52,7 @@
                                                     <i class="fa fa-fw fa-eye"></i>
                                                 </a>
                                                 <!--<button onclick="showInfoPresentacionItem(${pi.id})" class="btn btn-link"><i class="fa fa-fw fa-eye"></i></button>-->
-                                                <a href="/la-granja/almacen/crudPresentacionItem.do?item_id=${item.id}&presentacion_item_id=${pi.id}" style="text-decoration: none;">
+                                                <a href="/la-granja/almacen/crudPresentacionItem.do?id=${pi.id}" style="text-decoration: none;">
                                                     <i class="fa fa-fw fa-edit"></i>
                                                 </a>
                                                 <a onclick="showconfirmarEliminarModal(${pi.id}, '${pi.nombre}')" href="#" style="text-decoration: none;">

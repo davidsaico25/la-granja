@@ -47,19 +47,22 @@ public class CRUDPresentacionItemController extends HttpServlet {
 
     public void showCrudForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String presentacion_item_id = request.getParameter("presentacion_item_id");
+        String presentacion_item_id = request.getParameter("id");
 
         if (presentacion_item_id != null) {
+            request.setAttribute("action", "update");
+            
             respuesta = PresentacionItemService.get(presentacion_item_id, request, response);
             PresentacionItem presentacionItem = new Gson().fromJson(respuesta.getJsonElement("presentacion_item"), PresentacionItem.class);
             request.setAttribute("presentacionItem", presentacionItem);
-            request.setAttribute("presentacion_item_id", presentacionItem.getId());
+            
             request.setAttribute("item_id", presentacionItem.getItem_id());
-            request.setAttribute("action", "update");
+            request.setAttribute("presentacion_item_id", presentacionItem.getId());
+            request.setAttribute("imagen", presentacionItem.getImagen());
         } else {
-            String item_id = request.getParameter("item_id");
-            request.setAttribute("item_id", item_id);
             request.setAttribute("action", "create");
+            
+            request.setAttribute("item_id", request.getParameter("item_id"));
         }
 
         request.getRequestDispatcher("/almacen/crud-presentacion-item.jsp").forward(request, response);
@@ -67,55 +70,67 @@ public class CRUDPresentacionItemController extends HttpServlet {
 
     public void create(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Map<String, String> map = new HashMap<>();
-        map.put("item_id", request.getParameter("item_id"));
-        map.put("codigo_barra", request.getParameter("codigo_barra"));
-        map.put("nombre", request.getParameter("nombre"));
-        map.put("rendimiento", request.getParameter("rendimiento"));
-        map.put("precio_costo", request.getParameter("precio_costo"));
+        Map<String, String> map = buildMapParams(request, "create");
         
         respuesta = PresentacionItemService.create(map, request, response);
-       
+        
         if (respuesta.getStatus() < 200 || respuesta.getStatus() > 299) {
-            request.setAttribute("message", respuesta.getMessage());
-            request.setAttribute("item_id", map.get("item_id"));
+            request.setAttribute("status", "danger");
+            request.setAttribute("message", "No se pudo crear la Presentacion Item");
+            request.setAttribute("errors", respuesta.getErrors());
+            
             request.setAttribute("action", "create");
-            request.setAttribute("map", map);
-            request.getRequestDispatcher("/almacen/crud-presentacion-item.jsp").forward(request, response);
         } else {
-            String presentacion_item_id = respuesta.getJsonToString("id");
-
-            response.sendRedirect("/la-granja/almacen/crudPresentacionItem.do?item_id=" + map.get("item_id") + "&presentacion_item_id=" + presentacion_item_id);
+            request.setAttribute("status", "success");
+            request.setAttribute("message", "Presentacion Item creado");
+            
+            request.setAttribute("action", "update");
+            request.setAttribute("imagen", "item.png");
+            request.setAttribute("presentacion_item_id", respuesta.getJsonElement("id").getAsString());
         }
-        /*
+        request.setAttribute("item_id", request.getParameter("item_id"));
         request.setAttribute("map", map);
-        request.setAttribute("presentacion_item_id", presentacion_item_id);
-        request.getRequestDispatcher("/almacen/crud-presentacion-item.jsp").forward(request, response);*/
+        request.getRequestDispatcher("/almacen/crud-presentacion-item.jsp").forward(request, response);
     }
 
     private void update(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String item_id = request.getParameter("item_id");
         String presentacion_item_id = request.getParameter("presentacion_item_id");
 
+        Map<String, String> map = buildMapParams(request, "update");
+
+        respuesta = PresentacionItemService.update(presentacion_item_id, map, request, response);
+
+        if (respuesta.getStatus() < 200 || respuesta.getStatus() > 299) {
+            request.setAttribute("status", "danger");
+            request.setAttribute("message", "No se pudo actualizar la Presentacion Item");
+            request.setAttribute("errors", respuesta.getErrors());
+        } else {
+            request.setAttribute("status", "success");
+            request.setAttribute("message", "Actualizado");
+        }
+        request.setAttribute("action", "update");
+        request.setAttribute("item_id", request.getParameter("item_id"));
+        request.setAttribute("presentacion_item_id", presentacion_item_id);
+        request.setAttribute("map", map);
+        request.setAttribute("imagen", request.getParameter("imagen"));
+
+        request.getRequestDispatcher("/almacen/crud-presentacion-item.jsp").forward(request, response);
+    }
+
+    private Map<String, String> buildMapParams(HttpServletRequest request, String action) {
         Map<String, String> map = new HashMap<>();
+        if (action.equals("create")) {
+            map.put("item_id", request.getParameter("item_id"));
+        }
         map.put("codigo_barra", request.getParameter("codigo_barra"));
         map.put("nombre", request.getParameter("nombre"));
         map.put("rendimiento", request.getParameter("rendimiento"));
         map.put("precio_costo", request.getParameter("precio_costo"));
         map.put("estado", request.getParameter("estado"));
-
-        respuesta = PresentacionItemService.update(presentacion_item_id, map, request, response);
-
-        if (respuesta.getStatus() < 200 || respuesta.getStatus() > 299) {
-            request.setAttribute("message", respuesta.getMessage());
-        } else {
-            request.setAttribute("message", "Actualizado");
-        }
-        request.setAttribute("item_id", item_id);
-        request.setAttribute("presentacion_item_id", presentacion_item_id);
-        request.setAttribute("map", map);
-
-        request.getRequestDispatcher("/almacen/crud-presentacion-item.jsp").forward(request, response);
+        
+        return map;
     }
+    
+    
 }
