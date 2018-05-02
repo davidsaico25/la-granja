@@ -46,14 +46,6 @@
                                 <label for="precio_costo">Precio Costo</label>
                                 <input class="form-control" id="precio_costo" name="precio_costo" value="${map.precio_costo != null ? map.precio_costo : presentacionItem.precio_costo}" type="number" placeholder="Precio Costo">
                             </div>
-                            <div class="form-group">
-                                <div class="form-check">
-                                    <input id="estado" name="estado" type="checkbox" value="A" checked="checked">
-                                    <label class="form-check-label" for="estado">
-                                        Activo
-                                    </label>
-                                </div>
-                            </div>
                             <button id="btnCreatePresentacionItem" class="btn btn-primary" type="submit">Guardar</button>
                             <img id="loading" src="/la-granja/resources/images/ajax-loader.gif" style="display: none;"/>
                         </form>

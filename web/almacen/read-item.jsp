@@ -47,7 +47,6 @@
                                             <td>${pi.nombre}</td>
                                             <td>${pi.rendimiento} ${item.unidad_medida.simbolo}</td>
                                             <td>
-                                                <!--<a href="/la-granja/almacen/updateImagePresentacionItem.do?id=${pi.id}" class="btn btn-link"><i class="fa fa-fw fa-photo"></i></a>-->
                                                 <a onclick="showInfoModal(${pi.id})" href="#" style="text-decoration: none;">
                                                     <i class="fa fa-fw fa-eye"></i>
                                                 </a>

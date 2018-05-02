@@ -63,7 +63,7 @@ public class PresentacionItemService {
         url = new URL(path + "update/" + id);
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
         httpURLConnection.setDoOutput(true);
-        httpURLConnection.setRequestMethod("POST");
+        httpURLConnection.setRequestMethod("PUT");
         httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         httpURLConnection.setRequestProperty("Accept", "application/json");
         httpURLConnection.setRequestProperty("Authorization", cookie.getValue());
@@ -73,6 +73,66 @@ public class PresentacionItemService {
         OutputStream outputStream = httpURLConnection.getOutputStream();
         outputStream.write(body.getBytes());
         outputStream.flush();
+
+        BufferedReader bufferedReader;
+
+        int status = httpURLConnection.getResponseCode();
+
+        if (200 <= status && status <= 299) {
+            bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+        } else {
+            bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getErrorStream()));
+        }
+
+        String json = bufferedReader.readLine();
+
+        httpURLConnection.disconnect();
+        
+        return new Respuesta(status, json);
+    }
+    
+    public static Respuesta activate(String id, HttpServletRequest request, HttpServletResponse response)
+            throws MalformedURLException, IOException {
+        //Cookie cookie = Global.getCookieByName("token", request);
+        //if (cookie == null) return new Respuesta(-1, null);
+        
+        url = new URL(path + "activate/" + id);
+        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+        httpURLConnection.setDoOutput(true);
+        httpURLConnection.setRequestMethod("PUT");
+        httpURLConnection.setRequestProperty("Accept", "application/json");
+        //httpURLConnection.setRequestProperty("Authorization", cookie.getValue());
+        httpURLConnection.setRequestProperty("Authorization", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyMSIsImVtYWlsIjoidXNlcjFAb3V0bG9vay5jb20iLCJpbWFnZSI6bnVsbCwicGVyc29uYSI6eyJpZCI6MSwibm9tYnJlIjoidXNlcjEiLCJhcGVsbGlkb3AiOiJ1c2VyMWFwIiwiYXBlbGxpZG9tIjoidXNlcjFhbSIsInNleG8iOiJNIiwiZmVjaGFfbmFjaW1pZW50byI6IjIwMTgtMDEtMDFUMDU6MDA6MDAuMDAwWiJ9LCJwZXJmaWwiOnsiaWQiOjEsIm5vbWJyZSI6ImFkbWluaXN0cmFkb3Igc2lzdGVtYSIsImVzdGFkbyI6IkEifSwibG9jYWwiOnsiaWQiOjEsIm5vbWJyZSI6InBsYW50YSIsImVzdGFkbyI6IkEifSwiaWF0IjoxNTIyNjQyOTI4fQ.u7YX7DAfnPj1lBt0yFZWoBKzxZeUBKbjEMI9QBvU35Y");
+
+        BufferedReader bufferedReader;
+
+        int status = httpURLConnection.getResponseCode();
+
+        if (200 <= status && status <= 299) {
+            bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+        } else {
+            bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getErrorStream()));
+        }
+
+        String json = bufferedReader.readLine();
+
+        httpURLConnection.disconnect();
+        
+        return new Respuesta(status, json);
+    }
+    
+    public static Respuesta deactivate(String id, HttpServletRequest request, HttpServletResponse response)
+            throws MalformedURLException, IOException {
+        //Cookie cookie = Global.getCookieByName("token", request);
+        //if (cookie == null) return new Respuesta(-1, null);
+        
+        url = new URL(path + "deactivate/" + id);
+        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+        httpURLConnection.setDoOutput(true);
+        httpURLConnection.setRequestMethod("PUT");
+        httpURLConnection.setRequestProperty("Accept", "application/json");
+        //httpURLConnection.setRequestProperty("Authorization", cookie.getValue());
+        httpURLConnection.setRequestProperty("Authorization", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyMSIsImVtYWlsIjoidXNlcjFAb3V0bG9vay5jb20iLCJpbWFnZSI6bnVsbCwicGVyc29uYSI6eyJpZCI6MSwibm9tYnJlIjoidXNlcjEiLCJhcGVsbGlkb3AiOiJ1c2VyMWFwIiwiYXBlbGxpZG9tIjoidXNlcjFhbSIsInNleG8iOiJNIiwiZmVjaGFfbmFjaW1pZW50byI6IjIwMTgtMDEtMDFUMDU6MDA6MDAuMDAwWiJ9LCJwZXJmaWwiOnsiaWQiOjEsIm5vbWJyZSI6ImFkbWluaXN0cmFkb3Igc2lzdGVtYSIsImVzdGFkbyI6IkEifSwibG9jYWwiOnsiaWQiOjEsIm5vbWJyZSI6InBsYW50YSIsImVzdGFkbyI6IkEifSwiaWF0IjoxNTIyNjQyOTI4fQ.u7YX7DAfnPj1lBt0yFZWoBKzxZeUBKbjEMI9QBvU35Y");
 
         BufferedReader bufferedReader;
 

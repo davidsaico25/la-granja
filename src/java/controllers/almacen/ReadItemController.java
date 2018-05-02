@@ -16,7 +16,6 @@ import models.Item;
 import models.PresentacionItem;
 import services.ItemService;
 import services.PresentacionItemService;
-import services.UnidadMedidaService;
 import tool.Respuesta;
 
 @WebServlet(name = "ReadItemController", urlPatterns = {"/almacen/readItem.do"})

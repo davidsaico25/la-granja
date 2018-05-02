@@ -6,6 +6,8 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import models.*;
 import services.*;
 
@@ -13,7 +15,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Respuesta respuesta = LocalService.getAll(null, null);
+            Respuesta respuesta = PresentacionItemService.activate("29", null, null);
 
             System.out.println(respuesta.getJson());
 /*

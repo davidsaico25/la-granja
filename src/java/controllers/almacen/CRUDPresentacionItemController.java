@@ -37,6 +37,8 @@ public class CRUDPresentacionItemController extends HttpServlet {
             create(request, response);
         } else if (action.equalsIgnoreCase("update")) {
             update(request, response);
+        } else if (action.equalsIgnoreCase("deactivate")) {
+            deactivate(request, response);
         }
     }
 
@@ -117,6 +119,16 @@ public class CRUDPresentacionItemController extends HttpServlet {
 
         request.getRequestDispatcher("/almacen/crud-presentacion-item.jsp").forward(request, response);
     }
+    
+    private void deactivate(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String presentacion_item_id = request.getParameter("presentacion_item_id");
+
+        respuesta = PresentacionItemService.deactivate(presentacion_item_id, request, response);
+        
+        response.setContentType("application/json");
+        response.getWriter().write(respuesta.getJson());
+    }
 
     private Map<String, String> buildMapParams(HttpServletRequest request, String action) {
         Map<String, String> map = new HashMap<>();
@@ -127,10 +139,7 @@ public class CRUDPresentacionItemController extends HttpServlet {
         map.put("nombre", request.getParameter("nombre"));
         map.put("rendimiento", request.getParameter("rendimiento"));
         map.put("precio_costo", request.getParameter("precio_costo"));
-        map.put("estado", request.getParameter("estado"));
         
         return map;
     }
-    
-    
 }
