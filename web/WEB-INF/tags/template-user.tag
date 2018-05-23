@@ -46,7 +46,7 @@
                         </a>
                         <ul class="sidenav-second-level collapse" id="collapseAlmacen">
                             <li>
-                                <a href="/la-granja/almacen/listGrupoItem.do">Admin. insumos</a>
+                                <a href="/la-granja/almacen/grupo-item/list.do">Admin. insumos</a>
                             </li>
                             <li>
                                 <a href="/la-granja/almacen/listLocalHasItem.do">Inventario</a>
@@ -55,7 +55,7 @@
                                 <a href="/la-granja/administrar/listLocal.do">Locales</a>
                             </li>
                             <li>
-                                <a href="cards.html">Abastecimientos</a>
+                                <a href="/la-granja/almacen/abastecimiento/crud.do">Abastecimientos</a>
                             </li>
                         </ul>
                     </li>

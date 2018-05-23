@@ -151,6 +151,35 @@ public class PresentacionItemService {
         return new Respuesta(status, json);
     }
     
+    public static Respuesta getListPresentacionItem(HttpServletRequest request, HttpServletResponse response)
+            throws MalformedURLException, IOException {
+        Cookie cookie = Global.getCookieByName("token", request);
+        if (cookie == null) return new Respuesta(-1, null);
+        
+        url = new URL(path + "getList");
+        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+        httpURLConnection.setDoOutput(true);
+        httpURLConnection.setRequestMethod("GET");
+        httpURLConnection.setRequestProperty("Accept", "application/json");
+        httpURLConnection.setRequestProperty("Authorization", cookie.getValue());
+
+        BufferedReader bufferedReader;
+
+        int status = httpURLConnection.getResponseCode();
+
+        if (200 <= status && status <= 299) {
+            bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+        } else {
+            bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getErrorStream()));
+        }
+
+        String json = bufferedReader.readLine();
+
+        httpURLConnection.disconnect();
+        
+        return new Respuesta(status, json);
+    }
+    
     public static Respuesta getListPresentacionItem(String item_id, HttpServletRequest request, HttpServletResponse response)
             throws MalformedURLException, IOException {
         Cookie cookie = Global.getCookieByName("token", request);

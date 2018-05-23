@@ -1,3 +1,6 @@
+<!--
+ServletName = ListGrupoItemController
+-->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib tagdir="/WEB-INF/tags/" prefix="t"%>
 <t:template-user>
@@ -22,7 +25,7 @@
                                     </div>
                                     <div class="mr-5">${grupoItem.nombre}</div>
                                 </div>
-                                <a class="card-footer text-white clearfix small z-1" href="/la-granja/almacen/listItem.do?grupo_item_id=${grupoItem.id}">
+                                <a class="card-footer text-white clearfix small z-1" href="/la-granja/almacen/item/list.do?grupo_item_id=${grupoItem.id}">
                                     <span class="float-left">Ver</span>
                                     <span class="float-right">
                                         <i class="fa fa-angle-right"></i>

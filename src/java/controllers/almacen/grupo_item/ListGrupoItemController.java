@@ -1,4 +1,4 @@
-package controllers.almacen;
+package controllers.almacen.grupo_item;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -16,7 +16,7 @@ import models.GrupoItem;
 import services.GrupoItemService;
 import tool.Respuesta;
 
-@WebServlet(name = "ListGrupoItemController", urlPatterns = {"/almacen/listGrupoItem.do"})
+@WebServlet(name = "ListGrupoItemController", urlPatterns = {"/almacen/grupo-item/list.do"})
 public class ListGrupoItemController extends HttpServlet {
 
     Respuesta respuesta = null;
@@ -28,9 +28,6 @@ public class ListGrupoItemController extends HttpServlet {
 
         if (action == null) {
             getListGrupoItem(request, response);
-        } else if (action.equalsIgnoreCase("inventario")) {
-            request.setAttribute("action", "inventario");
-            request.getRequestDispatcher("/almacen/list-grupo-item.jsp").forward(request, response);
         }
     }
 
@@ -63,6 +60,6 @@ public class ListGrupoItemController extends HttpServlet {
             request.setAttribute("listGrupoItem", listGrupoItem);
         }
 
-        request.getRequestDispatcher("/almacen/list-grupo-item.jsp").forward(request, response);
+        request.getRequestDispatcher("/almacen/grupo-item/listGrupoItem.jsp").forward(request, response);
     }
 }

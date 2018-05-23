@@ -16,13 +16,13 @@
                         <a href="/la-granja/almacen/listGrupoItem.do">Admin. Items</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="/la-granja/almacen/listItem.do?grupo_item_id=${item.grupo_item.id}">${item.grupo_item.nombre}</a>
+                        <a href="/la-granja/almacen/item/list.do?grupo_item_id=${item.grupo_item.id}">${item.grupo_item.nombre}</a>
                     </li>
                     <li class="breadcrumb-item active">${item.nombre}</li>
                 </ol>
 
                 <div>
-                    <a class="btn btn-primary" href="/la-granja/almacen/crudPresentacionItem.do?item_id=${item.id}">Nueva Presentacion Insumo</a>
+                    <a class="btn btn-primary" href="/la-granja/almacen/presentacion-item/crud.do?item_id=${item.id}">Nueva Presentacion Insumo</a>
                 </div>
 
                 <div class="card mb-3">
@@ -47,16 +47,22 @@
                                             <td>${pi.nombre}</td>
                                             <td>${pi.rendimiento} ${item.unidad_medida.simbolo}</td>
                                             <td>
-                                                <a onclick="showInfoModal(${pi.id})" href="#" style="text-decoration: none;">
+                                                <a class="showInfoPI" href="#" style="text-decoration: none;" pi-id="${pi.id}">
                                                     <i class="fa fa-fw fa-eye"></i>
                                                 </a>
-                                                <!--<button onclick="showInfoPresentacionItem(${pi.id})" class="btn btn-link"><i class="fa fa-fw fa-eye"></i></button>-->
-                                                <a href="/la-granja/almacen/crudPresentacionItem.do?id=${pi.id}" style="text-decoration: none;">
+                                            <!--<a onclick="showInfoModal(${pi.id})" href="#" style="text-decoration: none;">
+                                                <i class="fa fa-fw fa-eye"></i>
+                                            </a>-->
+                                            <!--<button onclick="showInfoPresentacionItem(${pi.id})" class="btn btn-link"><i class="fa fa-fw fa-eye"></i></button>-->
+                                                <a href="/la-granja/almacen/presentacion-item/crud.do?id=${pi.id}" style="text-decoration: none;">
                                                     <i class="fa fa-fw fa-edit"></i>
                                                 </a>
-                                                <a onclick="showconfirmarEliminarModal(${pi.id}, '${pi.nombre}')" href="#" style="text-decoration: none;">
+                                                <a class="showModalDeactivatePI" href="#" style="text-decoration: none;" pi-id="${pi.id}">
                                                     <i class="fa fa-fw fa-trash"></i>
                                                 </a>
+                                                <!--<a onclick="showconfirmarEliminarModal(${pi.id}, '${pi.nombre}')" href="#" style="text-decoration: none;">
+                                                    <i class="fa fa-fw fa-trash"></i>
+                                                </a>-->
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -107,7 +113,7 @@
                             <div class="modal-body">Select "Eliminar" para eliminar item codigo <span id="pi-id"></span> <span id="pi-nombre"></span></div>
                             <div class="modal-footer">
                                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                <a class="btn btn-primary btnLogout" href="#">Logout</a>
+                                <a id="deactivatePI" class="btn btn-primary" href="#" pi-id="#">Logout</a>
                             </div>
                         </div>
                     </div>
@@ -116,11 +122,11 @@
         </div>
     </jsp:attribute>
     <jsp:attribute name="scripts">
-        <script src="/la-granja/resources/vendor/datatables/jquery.dataTables.js"></script>
-        <script src="/la-granja/resources/vendor/datatables/dataTables.bootstrap4.js"></script>
-        <script src="/la-granja/resources/js/sb-admin-datatables.min.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/vendor/datatables/jquery.dataTables.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/vendor/datatables/dataTables.bootstrap4.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/js/sb-admin-datatables.min.js"></script>
 
-        <script src="/la-granja/resources/js/global.js"></script>
-        <script src="/la-granja/resources/js/almacen/read-item.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/js/global.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/js/almacen/presentacion-item/list-presentacion-item.js"></script>
     </jsp:attribute>
 </t:template-user>

@@ -1,4 +1,4 @@
-package controllers.almacen;
+package controllers.almacen.presentacion_insumo;
 
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import models.PresentacionItem;
 import services.PresentacionItemService;
 import tool.Respuesta;
 
-@WebServlet(name = "CRUDPresentacionItemController", urlPatterns = {"/almacen/crudPresentacionItem.do"})
+@WebServlet(name = "CRUDPresentacionItemController", urlPatterns = {"/almacen/presentacion-item/crud.do"})
 public class CRUDPresentacionItemController extends HttpServlet {
 
     Respuesta respuesta = null;
@@ -67,7 +67,7 @@ public class CRUDPresentacionItemController extends HttpServlet {
             request.setAttribute("item_id", request.getParameter("item_id"));
         }
 
-        request.getRequestDispatcher("/almacen/crud-presentacion-item.jsp").forward(request, response);
+        request.getRequestDispatcher("/almacen/presentacion-item/crudPresentacionItem.jsp").forward(request, response);
     }
 
     public void create(HttpServletRequest request, HttpServletResponse response)
@@ -92,7 +92,8 @@ public class CRUDPresentacionItemController extends HttpServlet {
         }
         request.setAttribute("item_id", request.getParameter("item_id"));
         request.setAttribute("map", map);
-        request.getRequestDispatcher("/almacen/crud-presentacion-item.jsp").forward(request, response);
+        
+        request.getRequestDispatcher("/almacen/presentacion-item/crudPresentacionItem.jsp").forward(request, response);
     }
 
     private void update(HttpServletRequest request, HttpServletResponse response)
@@ -117,7 +118,7 @@ public class CRUDPresentacionItemController extends HttpServlet {
         request.setAttribute("map", map);
         request.setAttribute("imagen", request.getParameter("imagen"));
 
-        request.getRequestDispatcher("/almacen/crud-presentacion-item.jsp").forward(request, response);
+        request.getRequestDispatcher("/almacen/presentacion-item/crudPresentacionItem.jsp").forward(request, response);
     }
     
     private void deactivate(HttpServletRequest request, HttpServletResponse response)

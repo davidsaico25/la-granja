@@ -12,7 +12,7 @@
                         <a href="#">Almacen</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="/la-granja/almacen/listGrupoItem.do">Admin. Item</a>
+                        <a href="/la-granja/almacen/grupo-item/list.do">Admin. Item</a>
                     </li>
                     <li class="breadcrumb-item active">${grupoItem.nombre}</li>
                 </ol>
@@ -51,7 +51,7 @@
                                             <td>${item.marca_item.nombre}</td>
                                             <td>${item.descripcion}</td>
                                             <td>${item.unidad_medida.simbolo}</td>
-                                            <td><a href="/la-granja/almacen/readItem.do?item_id=${item.id}"><i class="fa fa-fw fa-arrow-right"></i></a></td>
+                                            <td><a href="/la-granja/almacen/presentacion-item/list.do?item_id=${item.id}"><i class="fa fa-fw fa-arrow-right"></i></a></td>
                                         </tr>
                                     </c:forEach>
                                 </tbody>

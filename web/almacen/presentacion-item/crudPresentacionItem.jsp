@@ -10,7 +10,7 @@
         <div class="content-wrapper">
             <div class="container-fluid">
 
-                <a class="btn btn-primary" href="/la-granja/almacen/readItem.do?item_id=${item_id}">Atras</a>
+                <a class="btn btn-primary" href="/la-granja/almacen/presentacion-item/list.do?item_id=${item_id}">Atras</a>
 
                 <div class="row">
                     <div class="col-md-6">
@@ -25,7 +25,7 @@
                             </div>
                         </c:if>
 
-                        <form id="formCRUD" action="${pageContext.request.contextPath}/almacen/crudPresentacionItem.do" method="POST" accept-charset=utf-8>
+                        <form id="formCRUD" action="crud.do" method="POST" accept-charset=utf-8>
                             <input name="action" value="${action}" hidden="hidden">
                             <input name="item_id" value="${item_id}" hidden="hidden">
                             <input name="presentacion_item_id" value="${presentacion_item_id}" hidden="hidden">
@@ -54,7 +54,7 @@
 
                     <div class="col-md-6" ${presentacion_item_id == null ? "hidden" : ''}>
                         <div id="presentacionInsumoImagen">
-                            <img src="http://localhost:3000/api/presentacion_item/get-image/${imagen != null ? imagen : 'item.png'}" class="img-fluid"/>
+                            <img src="http://localhost:3000/api/presentacion_item/get-image/${imagen}" class="img-fluid"/>
                         </div>
 
                         <div id="actions" class="row">
@@ -121,7 +121,7 @@
         </div>
     </jsp:attribute>
     <jsp:attribute name="scripts">
-        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/almacen/crud-presentacion-item.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/almacen/presentacion-item/crud-presentacion-item.js"></script>
 
         <script src="${pageContext.request.contextPath}/resources/vendor/dropzone/js/dropzone.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/global.js"></script>
@@ -129,7 +129,7 @@
             var imageUploadURL = URLRest + "presentacion_item/upload-image/${presentacion_item_id}";
             var paramNameFile = "image";
             var acceptedFile = "image/*";
-            var url = URLorigin + "/la-granja/almacen/crudPresentacionItem.do?id=${presentacion_item_id}";
+            var url = "${pageContext.request.contextPath}/almacen/presentacion-item/crud.do?id=${presentacion_item_id}";
         </script>
         <script src="${pageContext.request.contextPath}/resources/js/upload-file.js"></script>
     </jsp:attribute>

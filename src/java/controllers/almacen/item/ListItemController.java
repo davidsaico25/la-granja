@@ -1,4 +1,4 @@
-package controllers.almacen;
+package controllers.almacen.item;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -12,14 +12,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.GrupoItem;
 import models.Item;
-import models.PresentacionItem;
+import services.GrupoItemService;
 import services.ItemService;
-import services.PresentacionItemService;
 import tool.Respuesta;
 
-@WebServlet(name = "ReadItemController", urlPatterns = {"/almacen/readItem.do"})
-public class ReadItemController extends HttpServlet {
+@WebServlet(name = "ListItemController", urlPatterns = {"/almacen/item/list.do"})
+public class ListItemController extends HttpServlet {
 
     Respuesta respuesta = null;
 
@@ -29,7 +29,7 @@ public class ReadItemController extends HttpServlet {
         String action = request.getParameter("action");
 
         if (action == null) {
-            getItem(request, response);
+            getListItem(request, response);
         }
     }
 
@@ -43,36 +43,37 @@ public class ReadItemController extends HttpServlet {
         return "Short description";
     }
 
-    public void getItem(HttpServletRequest request, HttpServletResponse response)
+    public void getListItem(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String item_id = request.getParameter("item_id");
+        String grupo_item_id = request.getParameter("grupo_item_id");
 
-        respuesta = ItemService.getItem(item_id, request, response);
+        respuesta = GrupoItemService.get(grupo_item_id, request, response);
 
         if (respuesta.getStatus() < 200 || respuesta.getStatus() > 299) {
             request.setAttribute("message", respuesta.getMessage());
-        } else {            
+        } else {
             JsonElement jsonElement = new Gson().fromJson(respuesta.getJson(), JsonElement.class)
-                        .getAsJsonObject().get("item");
-            Item item = new Gson().fromJson(jsonElement, Item.class);
+                    .getAsJsonObject().get("grupoItem");
+            GrupoItem grupoItem = new Gson().fromJson(jsonElement, GrupoItem.class);
 
-            request.setAttribute("item", item);
+            request.setAttribute("grupoItem", grupoItem);
 
-            respuesta = PresentacionItemService.getListPresentacionItem(item_id, request, response);
+            //get list item del grupo indicado
+            respuesta = ItemService.getListItemByGrupoItem(grupo_item_id, request, response);
 
             if (respuesta.getStatus() < 200 || respuesta.getStatus() > 299) {
                 request.setAttribute("message", respuesta.getMessage());
             } else {
                 jsonElement = new Gson().fromJson(respuesta.getJson(), JsonElement.class)
-                        .getAsJsonObject().get("listPresentacionItem");
-                Type type = new TypeToken<ArrayList<PresentacionItem>>() {
+                        .getAsJsonObject().get("listItem");
+                Type type = new TypeToken<ArrayList<Item>>() {
                 }.getType();
-                List<PresentacionItem> listPresentacionItem = new Gson().fromJson(jsonElement, type);
-
-                request.setAttribute("listPresentacionItem", listPresentacionItem);
+                List<Item> listItem = new Gson().fromJson(jsonElement, type);
+                
+                request.setAttribute("listItem", listItem);
             }
         }
 
-        request.getRequestDispatcher("/almacen/read-item.jsp").forward(request, response);
+        request.getRequestDispatcher("/almacen/item/listItem.jsp").forward(request, response);
     }
 }
