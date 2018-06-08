@@ -17,7 +17,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="dataTablePI" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>Codigo Barra</th>
@@ -45,6 +45,7 @@
                     </div>
                 </div>
 
+                <!-- Modal -->
                 <div class="modal fade" id="addPIModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                         <div class="modal-content">
@@ -61,9 +62,11 @@
                                             <img id="pi-img" class="img-fluid"/>
                                         </div>
                                         <div class="col-md-6">
-                                            <form method="POST">
+                                            <form id="formAddPI">
+                                                <input id="id-pi">
+                                                <input id="json-pi">
                                                 <div class="form-group">
-                                                    <label for="cantidadPI">Codigo Barra</label>
+                                                    <label for="cantidadPI">Cantidad</label>
                                                     <input class="form-control" id="cantidadPI" name="cantidadPI" type="number">
                                                 </div>
                                                 <button id="btnAddPI" class="btn btn-primary" type="submit">Agregar</button>
@@ -79,25 +82,36 @@
                     </div>
                 </div>
 
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fa fa-table"></i> Solicitud Abastecimiento:
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTableAHPI" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
                 <form id="formCRUD" action="crud.do" method="POST">
                     <input name="action" value="create" hidden="hidden">
-                    <input name="listAHPI" hidden="hidden">
-                    <div class="form-group">
-                        <label for="local_id">Local</label>
-                        <select class="form-control" id="local_id" name="local_id">
-                            <c:forEach items="${listLocal}" var="local">
-                                <option value="${local.id}">${local.id} ${local.nombre}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <button id="btnCRUDAbastecimiento" class="btn btn-primary" type="submit">Guardar</button>
+                    <input id="jsonListAHPI" name="jsonListAHPI" value='${jsonListAHPI}' hidden="hidden">
+                    <button id="btnCRUDAbastecimiento" class="btn btn-primary" type="submit">Solicitar</button>
                     <img id="loading" src="/la-granja/resources/images/ajax-loader.gif" style="display: none;"/>
                 </form>
             </div>
         </div>
     </jsp:attribute>
     <jsp:attribute name="scripts">
+        <script src="${pageContext.request.contextPath}/resources/vendor/datatables/jquery.dataTables.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/vendor/datatables/dataTables.bootstrap4.js"></script>
+
         <script src="${pageContext.request.contextPath}/resources/js/global.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/almacen/abastecimiento/crud-abastecimiento.js"></script>
     </jsp:attribute>

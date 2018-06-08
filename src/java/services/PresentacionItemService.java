@@ -209,7 +209,7 @@ public class PresentacionItemService {
         return new Respuesta(status, json);
     }
     
-    public static Respuesta get(String id, HttpServletRequest request, HttpServletResponse response)
+    public static Respuesta read(String id, HttpServletRequest request, HttpServletResponse response)
             throws MalformedURLException, IOException {
         Cookie cookie = Global.getCookieByName("token", request);
         if (cookie == null) return new Respuesta(-1, null);

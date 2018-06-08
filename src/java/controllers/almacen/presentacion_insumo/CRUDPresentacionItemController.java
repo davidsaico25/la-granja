@@ -25,6 +25,8 @@ public class CRUDPresentacionItemController extends HttpServlet {
 
         if (action == null) {
             showCrudForm(request, response);
+        } else if (action.equalsIgnoreCase("read")) {
+            read(request, response);
         }
     }
 
@@ -54,7 +56,7 @@ public class CRUDPresentacionItemController extends HttpServlet {
         if (presentacion_item_id != null) {
             request.setAttribute("action", "update");
             
-            respuesta = PresentacionItemService.get(presentacion_item_id, request, response);
+            respuesta = PresentacionItemService.read(presentacion_item_id, request, response);
             PresentacionItem presentacionItem = new Gson().fromJson(respuesta.getJsonElement("presentacion_item"), PresentacionItem.class);
             request.setAttribute("presentacionItem", presentacionItem);
             
@@ -68,6 +70,14 @@ public class CRUDPresentacionItemController extends HttpServlet {
         }
 
         request.getRequestDispatcher("/almacen/presentacion-item/crudPresentacionItem.jsp").forward(request, response);
+    }
+    
+    private void read(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String id = request.getParameter("id");
+        respuesta = PresentacionItemService.read(id, request, response);
+        response.setContentType("application/json");
+        response.getWriter().write(respuesta.getJson());
     }
 
     public void create(HttpServletRequest request, HttpServletResponse response)

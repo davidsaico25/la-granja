@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    $('#dataTablePI').DataTable();
+    
     var token = localStorage.getItem("token");
     
     $('.showInfoPI').click(function() {
@@ -15,14 +17,15 @@ $(document).ready(function () {
         var id = $(this).attr("pi-id");
         deactivatePI(id);
     });
-
+    
     function showInfoModal(id) {
         $('#exampleModalCenter').modal('show');
         $.ajax({
-            method: "GET",
-            url: URLRest + "presentacion_item/get/" + id,
-            headers: {
-                'Authorization': token
+            method: 'GET',
+            url: 'crud.do',
+            data: {
+                'action': 'read',
+                'id': id
             },
             dataType: 'json'
         }).done(function (json) {
@@ -30,6 +33,7 @@ $(document).ready(function () {
             var pi = json.presentacion_item;
             if (pi.imagen != null) {
                 $('#pi-img').attr('src', URLRest + "presentacion_item/get-image/" + pi.imagen);
+                $('#valor-temp').html(JSON.stringify(pi));
             }
         }).fail(function (jqXHR) {
             console.log(jqXHR);

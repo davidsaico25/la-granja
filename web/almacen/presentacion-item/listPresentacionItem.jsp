@@ -31,7 +31,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="dataTablePI" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>Codigo Barra</th>
@@ -88,7 +88,7 @@
                                         <div class="col-md-6">
                                             <img id="pi-img" class="img-fluid"/>
                                         </div>
-                                        <div class="col-md-6">.col-md-6</div>
+                                        <div class="col-md-6" id="valor-temp">.col-md-6</div>
                                     </div>
                                 </div>
                             </div>
@@ -124,7 +124,6 @@
     <jsp:attribute name="scripts">
         <script src="${pageContext.request.contextPath}/resources/vendor/datatables/jquery.dataTables.js"></script>
         <script src="${pageContext.request.contextPath}/resources/vendor/datatables/dataTables.bootstrap4.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/sb-admin-datatables.min.js"></script>
 
         <script src="${pageContext.request.contextPath}/resources/js/global.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/almacen/presentacion-item/list-presentacion-item.js"></script>

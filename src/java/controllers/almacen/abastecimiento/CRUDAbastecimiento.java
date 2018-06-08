@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Local;
 import models.PresentacionItem;
+import models.Usuario;
 import services.LocalService;
 import services.PresentacionItemService;
 import tool.Respuesta;
@@ -30,7 +30,9 @@ public class CRUDAbastecimiento extends HttpServlet {
         String action = request.getParameter("action");
 
         if (action == null) {
-            cargarDatosInputs(request, response);
+            cargarVista(request, response);
+        } else if (action.equalsIgnoreCase("read-pi")) {
+            readPresentacionItem(request, response);
         }
     }
 
@@ -49,7 +51,7 @@ public class CRUDAbastecimiento extends HttpServlet {
         return "Short description";
     }
 
-    private void cargarDatosInputs(HttpServletRequest request, HttpServletResponse response)
+    private void cargarVista(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         respuesta = PresentacionItemService.getListPresentacionItem(request, response);
         
@@ -64,20 +66,6 @@ public class CRUDAbastecimiento extends HttpServlet {
 
             request.setAttribute("listPresentacionItem", listPresentacionItem);
         }
-        
-        respuesta = LocalService.getAll(request, response);
-
-        if (respuesta.getStatus() < 200 || respuesta.getStatus() > 299) {
-            request.setAttribute("message", respuesta.getMessage());
-        } else {
-            JsonElement jsonElement = new Gson().fromJson(respuesta.getJson(), JsonElement.class)
-                    .getAsJsonObject().get("listLocal");
-            Type type = new TypeToken<ArrayList<Local>>() {
-            }.getType();
-            List<Local> listLocal = new Gson().fromJson(jsonElement, type);
-
-            request.setAttribute("listLocal", listLocal);
-        }
 
         request.getRequestDispatcher("/almacen/abastecimiento/crudAbastecimiento.jsp").forward(request, response);
     }
@@ -85,6 +73,14 @@ public class CRUDAbastecimiento extends HttpServlet {
     private void create(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("create Abastecimiento");
-        String local_id = request.getParameter("local_id");
+        System.out.println(request.getParameter("jsonListAHPI"));
+    }
+    
+    private void readPresentacionItem(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String id = request.getParameter("id");
+        respuesta = PresentacionItemService.read(id, request, response);
+        response.setContentType("application/json");
+        response.getWriter().write(respuesta.getJson());
     }
 }
