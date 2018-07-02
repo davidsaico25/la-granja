@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 public class Abastecimiento {
     
     private int id;
@@ -7,6 +9,7 @@ public class Abastecimiento {
     private int estado_abastecimiento_id;
     private int local_id_origen;
     private int local_id_destino;
+    private List<Abastecimiento_Has_Item> listAHI;
 
     public int getId() {
         return id;
@@ -46,5 +49,13 @@ public class Abastecimiento {
 
     public void setLocal_id_destino(int local_id_destino) {
         this.local_id_destino = local_id_destino;
+    }
+
+    public List<Abastecimiento_Has_Item> getListAHI() {
+        return listAHI;
+    }
+
+    public void setListAHI(List<Abastecimiento_Has_Item> listAHI) {
+        this.listAHI = listAHI;
     }
 }

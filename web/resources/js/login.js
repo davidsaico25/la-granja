@@ -19,7 +19,7 @@ $(document).ready(function () {
             },
             dataType: 'json',
             beforeSend: function () {
-                $('#btnLogin').attr('disabled', '');
+                $('#btnLogin').attr('disabled', 'disabled');
                 $('#loading').show();
             }
         }).done(function (json) {

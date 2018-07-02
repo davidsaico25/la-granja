@@ -33,6 +33,11 @@
         <script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
         <!-- Core plugin JavaScript-->
         <script src="${pageContext.request.contextPath}/resources/vendor/jquery-easing/jquery.easing.min.js"></script>
+        
+        <script>
+            var la_granja_api_path = '${initParam.la_granja_api_path}';
+        </script>
+        
         <jsp:invoke fragment="scripts"/>
     </body>
 </html>

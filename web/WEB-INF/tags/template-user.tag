@@ -284,6 +284,10 @@
         <script src="/la-granja/resources/js/sb-admin.min.js"></script>
         
         <script type="text/javascript" src="/la-granja/resources/js/default-foot.js"></script>
+        
+        <script>
+            var la_granja_api_path = '${initParam.la_granja_api_path}';
+        </script>
 
         <jsp:invoke fragment="scripts"/>
     </body>

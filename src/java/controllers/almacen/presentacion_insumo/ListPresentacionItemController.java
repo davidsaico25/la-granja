@@ -47,7 +47,7 @@ public class ListPresentacionItemController extends HttpServlet {
             throws ServletException, IOException {
         String item_id = request.getParameter("item_id");
 
-        respuesta = ItemService.getItem(item_id, request, response);
+        respuesta = ItemService.read(item_id, request, response);
 
         if (respuesta.getStatus() < 200 || respuesta.getStatus() > 299) {
             request.setAttribute("message", respuesta.getMessage());

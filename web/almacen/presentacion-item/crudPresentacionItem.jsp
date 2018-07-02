@@ -54,7 +54,7 @@
 
                     <div class="col-md-6" ${presentacion_item_id == null ? "hidden" : ''}>
                         <div id="presentacionInsumoImagen">
-                            <img src="http://localhost:3000/api/presentacion_item/get-image/${imagen}" class="img-fluid"/>
+                            <img src="${initParam.la_granja_api_path}/presentacion_item/get-image/${imagen}" class="img-fluid"/>
                         </div>
 
                         <div id="actions" class="row">
@@ -124,9 +124,9 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/almacen/presentacion-item/crud-presentacion-item.js"></script>
 
         <script src="${pageContext.request.contextPath}/resources/vendor/dropzone/js/dropzone.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/global.js"></script>
+        
         <script type="text/javascript">
-            var imageUploadURL = URLRest + "presentacion_item/upload-image/${presentacion_item_id}";
+            var imageUploadURL = la_granja_api_path + "/presentacion_item/upload-image/${presentacion_item_id}";
             var paramNameFile = "image";
             var acceptedFile = "image/*";
             var url = "${pageContext.request.contextPath}/almacen/presentacion-item/crud.do?id=${presentacion_item_id}";

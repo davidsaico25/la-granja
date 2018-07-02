@@ -1,8 +1,6 @@
 package services;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -14,11 +12,11 @@ import tool.Respuesta;
 
 public class UsuarioService {
 
-    static String path = Global.path + "usuario/";
+    static String path = Global.la_granja_api_url + "/usuario";
     static URL url;
 
     public static Respuesta login(HttpServletRequest request, HttpServletResponse response) throws MalformedURLException, IOException {
-        url = new URL(path + "login");
+        url = new URL(path + "/login");
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
         httpURLConnection.setDoOutput(true);
         httpURLConnection.setRequestMethod("POST");
@@ -29,26 +27,12 @@ public class UsuarioService {
         OutputStream outputStream = httpURLConnection.getOutputStream();
         outputStream.write(body.getBytes());
         outputStream.flush();
-
-        BufferedReader bufferedReader;
-
-        int status = httpURLConnection.getResponseCode();
-
-        if (200 <= status && status <= 299) {
-            bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-        } else {
-            bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getErrorStream()));
-        }
-
-        String json = bufferedReader.readLine();
-
-        httpURLConnection.disconnect();
         
-        return new Respuesta(status, json);
+        return Global.getRespuesta(httpURLConnection);
     }
     
     public static Respuesta getIdentity(HttpServletRequest request, HttpServletResponse response) throws MalformedURLException, IOException {
-        url = new URL(path + "login");
+        url = new URL(path + "/login");
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
         httpURLConnection.setDoOutput(true);
         httpURLConnection.setRequestMethod("POST");
@@ -60,20 +44,6 @@ public class UsuarioService {
         outputStream.write(body.getBytes());
         outputStream.flush();
 
-        BufferedReader bufferedReader;
-
-        int status = httpURLConnection.getResponseCode();
-
-        if (200 <= status && status <= 299) {
-            bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-        } else {
-            bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getErrorStream()));
-        }
-
-        String json = bufferedReader.readLine();
-
-        httpURLConnection.disconnect();
-        
-        return new Respuesta(status, json);
+        return Global.getRespuesta(httpURLConnection);
     }
 }

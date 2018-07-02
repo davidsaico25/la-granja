@@ -6,16 +6,20 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Local;
-import models.PresentacionItem;
-import models.Usuario;
-import services.LocalService;
+import models.Abastecimiento;
+import models.Item;
+import services.AbastecimientoService;
+import services.ItemService;
 import services.PresentacionItemService;
 import tool.Respuesta;
 
@@ -31,8 +35,8 @@ public class CRUDAbastecimiento extends HttpServlet {
 
         if (action == null) {
             cargarVista(request, response);
-        } else if (action.equalsIgnoreCase("read-pi")) {
-            readPresentacionItem(request, response);
+        } else if (action.equalsIgnoreCase("read-i")) {
+            readItem(request, response);
         }
     }
 
@@ -54,33 +58,57 @@ public class CRUDAbastecimiento extends HttpServlet {
     private void cargarVista(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         respuesta = PresentacionItemService.getListPresentacionItem(request, response);
+        respuesta = ItemService.getList(request, response);
         
         if (respuesta.getStatus() < 200 || respuesta.getStatus() > 299) {
             request.setAttribute("message", respuesta.getMessage());
         } else {
             JsonElement jsonElement = new Gson().fromJson(respuesta.getJson(), JsonElement.class)
-                    .getAsJsonObject().get("listPresentacionItem");
-            Type type = new TypeToken<ArrayList<PresentacionItem>>() {
+                    .getAsJsonObject().get("listItem");
+            Type type = new TypeToken<ArrayList<Item>>() {
             }.getType();
-            List<PresentacionItem> listPresentacionItem = new Gson().fromJson(jsonElement, type);
+            List<Item> listItem = new Gson().fromJson(jsonElement, type);
 
-            request.setAttribute("listPresentacionItem", listPresentacionItem);
+            request.setAttribute("listItem", listItem);
         }
 
-        request.getRequestDispatcher("/almacen/abastecimiento/crudAbastecimiento.jsp").forward(request, response);
+        request.getRequestDispatcher("/almacen/abastecimiento/crudAbastecimientoItem.jsp").forward(request, response);
     }
 
     private void create(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("create Abastecimiento");
-        System.out.println(request.getParameter("jsonListAHPI"));
-    }
-    
-    private void readPresentacionItem(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String id = request.getParameter("id");
-        respuesta = PresentacionItemService.read(id, request, response);
+        Map<String, String> map = buildMapParams(request, "create");
+        
+        respuesta = AbastecimientoService.create(map, request, response);
+        
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(CRUDAbastecimiento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         response.setContentType("application/json");
         response.getWriter().write(respuesta.getJson());
+    }
+    
+    private void readItem(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String id = request.getParameter("id");
+        respuesta = ItemService.read(id, request, response);
+        response.setContentType("application/json");
+        response.getWriter().write(respuesta.getJson());
+    }
+    
+    private Map<String, String> buildMapParams(HttpServletRequest request, String action) {
+        Map<String, String> map = new HashMap<>();
+        if (action.equals("create")) {
+            map.put("local_id_origen", "1");
+            //map.put("estado_abastecimiento_id", "1");
+        }
+        map.put("observacion", request.getParameter("observacion"));
+        map.put("local_id_destino", request.getParameter("local_id_destino"));
+        map.put("json_abastecimiento_has_item", request.getParameter("listAHI"));
+        
+        return map;
     }
 }

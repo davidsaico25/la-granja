@@ -51,6 +51,7 @@ public class UsuarioController extends HttpServlet {
                     .get("token")
                     .toString();
             Cookie cookie = new Cookie("token", token);
+            cookie.setMaxAge(60*60*24*30);
             response.addCookie(cookie);
         }
 
@@ -68,6 +69,7 @@ public class UsuarioController extends HttpServlet {
                     .get("usuario")
                     .toString();
             Cookie cookie = new Cookie("identity", identity);
+            cookie.setMaxAge(60*60*24*30);
             response.addCookie(cookie);
         }
 

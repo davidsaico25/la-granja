@@ -20,7 +20,7 @@ $(document).ready(function () {
 
     //Registrar la solicitud de abastecimiento
     $("#formCRUD").submit(function (event) {
-        $('#btnCRUDAbastecimiento').attr('disabled', '');
+        $('#btnCRUDAbastecimiento').attr('disabled', 'disabled');
         $('#loading').show();
         return true;
     });
@@ -75,7 +75,7 @@ $(document).ready(function () {
         }).done(function (json) {
             console.log(json);
             var pi = json.presentacion_item;
-            $('#pi-img').attr('src', URLRest + "presentacion_item/get-image/" + pi.imagen);
+            $('#pi-img').attr('src', la_granja_api_path + "/presentacion_item/get-image/" + pi.imagen);
             $('#id-pi').val(pi.id);
             $('#json-pi').val(JSON.stringify(pi));
         }).fail(function (jqXHR) {

@@ -6,46 +6,42 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import models.*;
 import services.*;
 
 public class Main {
 
     public static void main(String[] args) {
-        List<Usuario> list = new ArrayList<>();
-        Usuario user1 = new Usuario();
-        user1.setUsername("davisonsp");
-        user1.setEmail("david@granja.com");
-        list.add(user1);
-        
-        Usuario user2 = new Usuario();
-        user2.setUsername("bensp");
-        user2.setEmail("ben@granja.com");
-        list.add(user2);
-        
-        Usuario user3 = new Usuario();
-        user3.setUsername("aominedrenz");
-        user3.setEmail("aomine@granja.com");
-        list.add(user3);
-        
-        String json = new Gson().toJson(list);
-        
-        System.out.println(json);
-        /*
         try {
-            Respuesta respuesta = PresentacionItemService.activate("33", null, null);
+            Respuesta respuesta = AbastecimientoService.read("2", null, null);
 
             System.out.println(respuesta.getJson());
 
+            Abastecimiento abastecimiento = new Gson().fromJson(respuesta.getJsonElement("abastecimiento"), Abastecimiento.class);
+            /*System.out.println(abastecimiento.getId());
+            System.out.println(abastecimiento.getObservacion());
+            System.out.println(abastecimiento.getEstado_abastecimiento_id());
+            System.out.println(abastecimiento.getLocal_id_origen());
+            System.out.println(abastecimiento.getLocal_id_destino());*/
+
+            JsonElement jsonElement = new Gson().fromJson(respuesta.getJson(), JsonElement.class).getAsJsonObject()
+                    .getAsJsonObject("abastecimiento")
+                    .getAsJsonArray("listAbastecimientoHasItem");
+
+            Type type = new TypeToken<ArrayList<Abastecimiento_Has_Item>>() {
+            }.getType();
+            List<Abastecimiento_Has_Item> list = new Gson().fromJson(jsonElement, type);
+
+            System.out.println(list.size());
+
+
+            /*
             JsonElement jsonElement = new Gson().fromJson(respuesta.getJson(), JsonElement.class)
                     .getAsJsonObject().get("listLocalHasItem");
             Type type = new TypeToken<ArrayList<LocalHasItem>>() {
             }.getType();
-            List<LocalHasItem> list = new Gson().fromJson(jsonElement, type);
-            
-            
+            List<LocalHasItem> list = new Gson().fromJson(jsonElement, type);*/
+ /*
             JsonArray jsonArray = respuesta.getJsonElement("listPresentacionItem").getAsJsonArray();
             
             List<PresentacionItem> list = new ArrayList<>();
@@ -56,10 +52,10 @@ public class Main {
             }
             JsonObject jsonObject = respuesta.getJsonElement("item").getAsJsonObject();
             Item item = new Gson().fromJson(jsonObject.get("i"), Item.class);
-            Item item = new Gson().fromJson(jsonObject.get("i"), Item.class);
+            Item item = new Gson().fromJson(jsonObject.get("i"), Item.class);*/
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
-        }*/
+        }
     }
 
 }

@@ -125,7 +125,6 @@
         <script src="${pageContext.request.contextPath}/resources/vendor/datatables/jquery.dataTables.js"></script>
         <script src="${pageContext.request.contextPath}/resources/vendor/datatables/dataTables.bootstrap4.js"></script>
 
-        <script src="${pageContext.request.contextPath}/resources/js/global.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/almacen/presentacion-item/list-presentacion-item.js"></script>
     </jsp:attribute>
 </t:template-user>
