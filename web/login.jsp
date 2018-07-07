@@ -18,7 +18,7 @@
                         <button id="btnLogin" type="submit" class="btn btn-primary btn-block">Entrar</button>
                         <img id="loading" src="${pageContext.request.contextPath}/resources/images/ajax-loader.gif" style="display: none;"/>
                     </form>
-                    <label>webserviceip ${initParam.la_granja_api_path}</label><br/>
+                    <label>webserviceip ${initParam.la_granja_api_url}</label><br/>
                     <label>contextPath: ${pageContext.request.contextPath}</label><br/>
                     <label>localAddr: ${pageContext.request.localAddr}</label><br/>
                     <label>localName: ${pageContext.request.localName}</label><br/>

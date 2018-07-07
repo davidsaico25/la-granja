@@ -13,29 +13,29 @@
 
                 <div class="card mb-3">
                     <div class="card-header">
-                        <i class="fa fa-table"></i> Lista Presentaciones:
+                        <i class="fa fa-table"></i> Lista Item:
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTablePI" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="dataTableI" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>Codigo Barra</th>
+                                        <th>Marca</th>
                                         <th>Nombre</th>
-                                        <th>Descripcion</th>
+                                        <th>Unidad Medida</th>
                                         <th>Accion</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach items="${listPresentacionItem}" var="pi">
+                                    <c:forEach items="${listItem}" var="i">
                                         <tr>
-                                            <td>${pi.codigo_barra}</td>
-                                            <td>${pi.nombre}</td>
-                                            <td>${pi.rendimiento} ${pi.item.unidad_medida.simbolo}</td>
+                                            <td>${i.id} ${i.marca_item.nombre}</td>
+                                            <td>${i.nombre}</td>
+                                            <td>${i.unidad_medida.simbolo}</td>
                                             <td>
-                                                <a class="showModalAddPI" href="#" style="text-decoration: none;" pi-id="${pi.id}">
+                                                <button type="button" class="btn btn-link btnShowModalAddItem" i-id="${i.id}" style="padding: 0px">
                                                     <i class="fa fa-fw fa-plus"></i>
-                                                </a>
+                                                </button>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -46,11 +46,11 @@
                 </div>
 
                 <!-- Modal -->
-                <div class="modal fade" id="addPIModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                <h5 class="modal-title" id="exampleModalLongTitle">Agregar Item a Solicitud</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -59,19 +59,18 @@
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <img id="pi-img" class="img-fluid"/>
+                                            <img id="i_img" class="img-fluid" src="${initParam.la_granja_api_url}/presentacion_item/get-image/item.png"/>
                                         </div>
                                         <div class="col-md-6">
-                                            <form id="formAddPI">
-                                                <input id="id-pi">
-                                                <input id="json-pi">
-                                                <div class="form-group">
-                                                    <label for="cantidadPI">Cantidad</label>
-                                                    <input class="form-control" id="cantidadPI" name="cantidadPI" type="number">
-                                                </div>
-                                                <button id="btnAddPI" class="btn btn-primary" type="submit">Agregar</button>
-                                                <img id="loading" src="/la-granja/resources/images/ajax-loader.gif" style="display: none;"/>
-                                            </form>
+                                            <input id="i_id">
+                                            <input id="i_json">
+                                            <div class="form-group">
+                                                <label for="ahi_cantidad">Cantidad</label>
+                                                <input class="form-control" id="ahi_cantidad" name="ahi_cantidad" type="number"><span id="unidad_medida_simbolo"></span>
+                                            </div>
+                                            <button id="btnAddAHI" class="btn btn-primary">Agregar</button>
+                                            <button id="btnEditAHI" class="btn btn-primary">Guardar</button>
+                                            <button id="btnDeleteAHI" class="btn btn-danger">Eliminar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -88,10 +87,14 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTableAHPI" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="dataTableAHI" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
+                                        <th>Marca</th>
                                         <th>Nombre</th>
+                                        <th>Cantidad</th>
+                                        <th>Unidad Medida</th>
+                                        <th>Accion</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -99,12 +102,15 @@
                     </div>
                 </div>
 
-                <form id="formCRUD" action="crud.do" method="POST">
-                    <input name="action" value="create" hidden="hidden">
-                    <input id="jsonListAHPI" name="jsonListAHPI" value='${jsonListAHPI}' hidden="hidden">
-                    <button id="btnCRUDAbastecimiento" class="btn btn-primary" type="submit">Solicitar</button>
-                    <img id="loading" src="/la-granja/resources/images/ajax-loader.gif" style="display: none;"/>
-                </form>
+                <div>
+                    <input id="action" name="action" value="create" hidden="hidden">
+                    <div class="form-group">
+                        <label for="observacion">Observacion</label>
+                        <textarea class="form-control" id="observacion" name="observacion" rows="1"></textarea>
+                    </div>
+                    <button id="btnCreateAbastecimiento" class="btn btn-primary" type="submit">Solicitar</button>
+                    <img id="loading" src="${pageContext.request.contextPath}/resources/images/ajax-loader.gif" style="display: none;"/>
+                </div>
             </div>
         </div>
     </jsp:attribute>
@@ -112,6 +118,6 @@
         <script src="${pageContext.request.contextPath}/resources/vendor/datatables/jquery.dataTables.js"></script>
         <script src="${pageContext.request.contextPath}/resources/vendor/datatables/dataTables.bootstrap4.js"></script>
 
-        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/almacen/abastecimiento/crud-abastecimiento.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/almacen/abastecimiento/create-abastecimiento.js"></script>
     </jsp:attribute>
 </t:template-user>

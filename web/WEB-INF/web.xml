@@ -13,7 +13,7 @@
         </session-timeout>
     </session-config>
     <context-param>
-        <param-name>la_granja_api_path</param-name>
+        <param-name>la_granja_api_url</param-name>
         <param-value>http://localhost:3000/api</param-value>
     </context-param>
 </web-app>

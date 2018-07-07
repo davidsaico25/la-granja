@@ -52,7 +52,7 @@ public class ListItemController extends HttpServlet {
         if (respuesta.getStatus() < 200 || respuesta.getStatus() > 299) {
             request.setAttribute("message", respuesta.getMessage());
         } else {
-            JsonElement jsonElement = new Gson().fromJson(respuesta.getJson(), JsonElement.class)
+            JsonElement jsonElement = new Gson().fromJson(respuesta.getJson_string(), JsonElement.class)
                     .getAsJsonObject().get("grupoItem");
             GrupoItem grupoItem = new Gson().fromJson(jsonElement, GrupoItem.class);
 
@@ -64,7 +64,7 @@ public class ListItemController extends HttpServlet {
             if (respuesta.getStatus() < 200 || respuesta.getStatus() > 299) {
                 request.setAttribute("message", respuesta.getMessage());
             } else {
-                jsonElement = new Gson().fromJson(respuesta.getJson(), JsonElement.class)
+                jsonElement = new Gson().fromJson(respuesta.getJson_string(), JsonElement.class)
                         .getAsJsonObject().get("listItem");
                 Type type = new TypeToken<ArrayList<Item>>() {
                 }.getType();

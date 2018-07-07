@@ -54,7 +54,7 @@
 
                     <div class="col-md-6" ${presentacion_item_id == null ? "hidden" : ''}>
                         <div id="presentacionInsumoImagen">
-                            <img src="${initParam.la_granja_api_path}/presentacion_item/get-image/${imagen}" class="img-fluid"/>
+                            <img src="${initParam.la_granja_api_url}/presentacion_item/get-image/${imagen}" class="img-fluid"/>
                         </div>
 
                         <div id="actions" class="row">
@@ -126,7 +126,7 @@
         <script src="${pageContext.request.contextPath}/resources/vendor/dropzone/js/dropzone.js"></script>
         
         <script type="text/javascript">
-            var imageUploadURL = la_granja_api_path + "/presentacion_item/upload-image/${presentacion_item_id}";
+            var imageUploadURL = la_granja_api_url + "/presentacion_item/upload-image/${presentacion_item_id}";
             var paramNameFile = "image";
             var acceptedFile = "image/*";
             var url = "${pageContext.request.contextPath}/almacen/presentacion-item/crud.do?id=${presentacion_item_id}";

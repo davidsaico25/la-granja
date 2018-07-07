@@ -35,7 +35,7 @@
         <script src="${pageContext.request.contextPath}/resources/vendor/jquery-easing/jquery.easing.min.js"></script>
         
         <script>
-            var la_granja_api_path = '${initParam.la_granja_api_path}';
+            var la_granja_api_url = '${initParam.la_granja_api_url}';
         </script>
         
         <jsp:invoke fragment="scripts"/>

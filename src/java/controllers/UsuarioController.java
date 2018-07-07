@@ -46,7 +46,7 @@ public class UsuarioController extends HttpServlet {
 
         if (200 <= respuesta.getStatus() && respuesta.getStatus() <= 299) {
             String token = new Gson()
-                    .fromJson(respuesta.getJson(), JsonElement.class)
+                    .fromJson(respuesta.getJson_string(), JsonElement.class)
                     .getAsJsonObject()
                     .get("token")
                     .toString();
@@ -56,7 +56,7 @@ public class UsuarioController extends HttpServlet {
         }
 
         response.setContentType("application/json");
-        response.getWriter().write(respuesta.getJson());
+        response.getWriter().write(respuesta.getJson_string());
     }
 
     public void identity(HttpServletRequest request, HttpServletResponse response)
@@ -65,7 +65,7 @@ public class UsuarioController extends HttpServlet {
 
         if (200 <= respuesta.getStatus() && respuesta.getStatus() <= 299) {
             String identity = new Gson()
-                    .fromJson(respuesta.getJson(), JsonElement.class).getAsJsonObject()
+                    .fromJson(respuesta.getJson_string(), JsonElement.class).getAsJsonObject()
                     .get("usuario")
                     .toString();
             Cookie cookie = new Cookie("identity", identity);
@@ -74,6 +74,6 @@ public class UsuarioController extends HttpServlet {
         }
 
         response.setContentType("application/json");
-        response.getWriter().write(respuesta.getJson());
+        response.getWriter().write(respuesta.getJson_string());
     }
 }

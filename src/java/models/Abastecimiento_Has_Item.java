@@ -6,6 +6,7 @@ public class Abastecimiento_Has_Item {
     private int abastecimiento_id;
     private int item_id;
     private double cantidad;
+    private Item item;
 
     public int getId() {
         return id;
@@ -37,5 +38,13 @@ public class Abastecimiento_Has_Item {
 
     public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 }

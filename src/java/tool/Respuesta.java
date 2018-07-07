@@ -1,7 +1,6 @@
 package tool;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
@@ -10,14 +9,14 @@ import java.util.List;
 public class Respuesta {
 
     private int status;
-    private String json;
+    private String json_string;
 
     public Respuesta() {
     }
 
     public Respuesta(int status, String json) {
         this.status = status;
-        this.json = json;
+        this.json_string = json;
     }
 
     public int getStatus() {
@@ -28,16 +27,16 @@ public class Respuesta {
         this.status = status;
     }
 
-    public String getJson() {
-        return json;
+    public String getJson_string() {
+        return json_string;
     }
 
-    public void setJson(String json) {
-        this.json = json;
+    public void setJson_string(String json_string) {
+        this.json_string = json_string;
     }
 
     public String getMessage() {
-        return new Gson().fromJson(json, JsonElement.class)
+        return new Gson().fromJson(json_string, JsonElement.class)
                 .getAsJsonObject().get("message").getAsString();
     }
 
@@ -48,7 +47,7 @@ public class Respuesta {
     }
 
     public JsonElement getJsonElement(String element) {
-        return new Gson().fromJson(json, JsonElement.class)
+        return new Gson().fromJson(json_string, JsonElement.class)
                 .getAsJsonObject().get(element);
     }
 }

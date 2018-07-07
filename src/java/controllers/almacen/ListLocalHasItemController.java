@@ -56,7 +56,7 @@ public class ListLocalHasItemController extends HttpServlet {
         if (respuesta.getStatus() < 200 || respuesta.getStatus() > 299) {
             request.setAttribute("message", respuesta.getMessage());
         } else {
-            JsonElement jsonElement = new Gson().fromJson(respuesta.getJson(), JsonElement.class)
+            JsonElement jsonElement = new Gson().fromJson(respuesta.getJson_string(), JsonElement.class)
                     .getAsJsonObject().get("listLocalHasItem");
             Type type = new TypeToken<ArrayList<LocalHasItem>>() {
             }.getType();

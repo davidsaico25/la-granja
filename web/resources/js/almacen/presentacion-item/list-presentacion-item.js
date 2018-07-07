@@ -32,7 +32,7 @@ $(document).ready(function () {
             console.log(json);
             var pi = json.presentacion_item;
             if (pi.imagen != null) {
-                $('#pi-img').attr('src', la_granja_api_path + "/presentacion_item/get-image/" + pi.imagen);
+                $('#pi-img').attr('src', la_granja_api_url + "/presentacion_item/get-image/" + pi.imagen);
                 $('#valor-temp').html(JSON.stringify(pi));
             }
         }).fail(function (jqXHR) {

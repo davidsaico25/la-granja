@@ -10,7 +10,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import static services.ItemService.url;
 import tool.Parameters;
 import tool.Respuesta;
 

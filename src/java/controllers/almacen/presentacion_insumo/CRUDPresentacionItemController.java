@@ -77,7 +77,7 @@ public class CRUDPresentacionItemController extends HttpServlet {
         String id = request.getParameter("id");
         respuesta = PresentacionItemService.read(id, request, response);
         response.setContentType("application/json");
-        response.getWriter().write(respuesta.getJson());
+        response.getWriter().write(respuesta.getJson_string());
     }
 
     public void create(HttpServletRequest request, HttpServletResponse response)
@@ -138,7 +138,7 @@ public class CRUDPresentacionItemController extends HttpServlet {
         respuesta = PresentacionItemService.deactivate(presentacion_item_id, request, response);
         
         response.setContentType("application/json");
-        response.getWriter().write(respuesta.getJson());
+        response.getWriter().write(respuesta.getJson_string());
     }
 
     private Map<String, String> buildMapParams(HttpServletRequest request, String action) {

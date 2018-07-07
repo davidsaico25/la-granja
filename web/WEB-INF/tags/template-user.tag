@@ -55,7 +55,7 @@
                                 <a href="/la-granja/administrar/listLocal.do">Locales</a>
                             </li>
                             <li>
-                                <a href="/la-granja/almacen/abastecimiento/crud.do">Abastecimientos</a>
+                                <a href="/la-granja/almacen/abastecimiento/create.do">Crear Abastecimiento</a>
                             </li>
                         </ul>
                     </li>
@@ -286,7 +286,7 @@
         <script type="text/javascript" src="/la-granja/resources/js/default-foot.js"></script>
         
         <script>
-            var la_granja_api_path = '${initParam.la_granja_api_path}';
+            var la_granja_api_url = '${initParam.la_granja_api_url}';
         </script>
 
         <jsp:invoke fragment="scripts"/>

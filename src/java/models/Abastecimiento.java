@@ -6,10 +6,15 @@ public class Abastecimiento {
     
     private int id;
     private String observacion;
+    private String fecha_recepcion;
+    private String fecha_creacion;
     private int estado_abastecimiento_id;
     private int local_id_origen;
     private int local_id_destino;
-    private List<Abastecimiento_Has_Item> listAHI;
+    private Local local_origen;
+    private Local local_destino;
+    private EstadoAbastecimiento estado_abastecimiento;
+    private List<Abastecimiento_Has_Item> listAbastecimientoHasItem;
 
     public int getId() {
         return id;
@@ -25,6 +30,22 @@ public class Abastecimiento {
 
     public void setObservacion(String observacion) {
         this.observacion = observacion;
+    }
+
+    public String getFecha_recepcion() {
+        return fecha_recepcion;
+    }
+
+    public void setFecha_recepcion(String fecha_recepcion) {
+        this.fecha_recepcion = fecha_recepcion;
+    }
+
+    public String getFecha_creacion() {
+        return fecha_creacion;
+    }
+
+    public void setFecha_creacion(String fecha_creacion) {
+        this.fecha_creacion = fecha_creacion;
     }
 
     public int getEstado_abastecimiento_id() {
@@ -51,11 +72,35 @@ public class Abastecimiento {
         this.local_id_destino = local_id_destino;
     }
 
-    public List<Abastecimiento_Has_Item> getListAHI() {
-        return listAHI;
+    public Local getLocal_origen() {
+        return local_origen;
     }
 
-    public void setListAHI(List<Abastecimiento_Has_Item> listAHI) {
-        this.listAHI = listAHI;
+    public void setLocal_origen(Local local_origen) {
+        this.local_origen = local_origen;
+    }
+
+    public Local getLocal_destino() {
+        return local_destino;
+    }
+
+    public void setLocal_destino(Local local_destino) {
+        this.local_destino = local_destino;
+    }
+
+    public EstadoAbastecimiento getEstado_abastecimiento() {
+        return estado_abastecimiento;
+    }
+
+    public void setEstado_abastecimiento(EstadoAbastecimiento estado_abastecimiento) {
+        this.estado_abastecimiento = estado_abastecimiento;
+    }
+
+    public List<Abastecimiento_Has_Item> getListAbastecimientoHasItem() {
+        return listAbastecimientoHasItem;
+    }
+
+    public void setListAbastecimientoHasItem(List<Abastecimiento_Has_Item> listAbastecimientoHasItem) {
+        this.listAbastecimientoHasItem = listAbastecimientoHasItem;
     }
 }
