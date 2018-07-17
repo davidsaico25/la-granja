@@ -13,29 +13,16 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Respuesta respuesta = AbastecimientoService.read("37", null, null);
+            Respuesta respuesta = AbastecimientoService.getListByEstadoID("1", null, null);
 
             System.out.println(respuesta.getJson_string());
-
-            Abastecimiento abastecimiento = new Gson().fromJson(respuesta.getJsonElement("abastecimiento"), Abastecimiento.class);
-            System.out.println(abastecimiento.getId());
-            System.out.println(abastecimiento.getObservacion());
-            System.out.println(abastecimiento.getEstado_abastecimiento_id());
-            System.out.println(abastecimiento.getLocal_id_origen());
-            System.out.println(abastecimiento.getLocal_id_destino());
-            System.out.println(abastecimiento.getListAbastecimientoHasItem().size());
             
-            List<Abastecimiento_Has_Item> ListAbastecimientoHasItem = abastecimiento.getListAbastecimientoHasItem();
+            Type type = new TypeToken<ArrayList<Abastecimiento>>() {
+            }.getType();
+            List<Abastecimiento> list = new Gson().fromJson(respuesta.getJsonElement("listAbastecimiento"), type);
             
-            for (Abastecimiento_Has_Item ahi : ListAbastecimientoHasItem) {
-                System.out.println(ahi.getId());
-                System.out.println(ahi.getAbastecimiento_id());
-                System.out.println(ahi.getItem_id());
-                System.out.println(ahi.getCantidad());
-                System.out.println(ahi.getItem().getId());
-                System.out.println(ahi.getItem().getNombre());
-                System.out.println(ahi.getItem().getUnidad_medida().getSimbolo());
-                System.out.println(ahi.getItem().getMarca_item().getNombre());
+            for (Abastecimiento abastecimiento : list) {
+                System.out.println(abastecimiento.getId());
             }
 
             /*

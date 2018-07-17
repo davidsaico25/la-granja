@@ -57,6 +57,9 @@
                             <li>
                                 <a href="/la-granja/almacen/abastecimiento/create.do">Crear Abastecimiento</a>
                             </li>
+                            <li>
+                                <a href="/la-granja/almacen/abastecimiento/gestionar.do">Administrar Solicitudes Abastecimiento</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">

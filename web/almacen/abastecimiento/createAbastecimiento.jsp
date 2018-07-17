@@ -11,36 +11,72 @@
                     ${message}
                 </c:if>
 
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <i class="fa fa-table"></i> Lista Item:
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-6">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <i class="fa fa-table"></i> Lista Item:
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTableI" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Marca</th>
+                                                <th>Nombre</th>
+                                                <th>Unidad Medida</th>
+                                                <th>Accion</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${listItem}" var="i">
+                                                <tr>
+                                                    <td>${i.id} ${i.marca_item.nombre}</td>
+                                                    <td>${i.nombre}</td>
+                                                    <td>${i.unidad_medida.simbolo}</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-link btnShowModalAddItem" i-id="${i.id}" style="padding: 0px">
+                                                            <i class="fa fa-fw fa-plus"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTableI" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Marca</th>
-                                        <th>Nombre</th>
-                                        <th>Unidad Medida</th>
-                                        <th>Accion</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach items="${listItem}" var="i">
-                                        <tr>
-                                            <td>${i.id} ${i.marca_item.nombre}</td>
-                                            <td>${i.nombre}</td>
-                                            <td>${i.unidad_medida.simbolo}</td>
-                                            <td>
-                                                <button type="button" class="btn btn-link btnShowModalAddItem" i-id="${i.id}" style="padding: 0px">
-                                                    <i class="fa fa-fw fa-plus"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
+
+                    <div class="col-sm-12 col-md-12 col-lg-6" id="qwerty">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <i class="fa fa-table"></i> Solicitud Abastecimiento:
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTableAHI" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Marca</th>
+                                                <th>Nombre</th>
+                                                <th>Cantidad</th>
+                                                <th>Unidad Medida</th>
+                                                <th>Accion</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <input id="action" name="action" value="create" hidden="hidden">
+                                <div class="form-group">
+                                    <label for="observacion">Observacion</label>
+                                    <textarea class="form-control" id="observacion" name="observacion" rows="1"></textarea>
+                                </div>
+                                <button id="btnCreateAbastecimiento" class="btn btn-primary" type="submit">Solicitar</button>
+                                <img id="loading" src="${pageContext.request.contextPath}/resources/images/ajax-loader.gif" style="display: none;"/>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -79,37 +115,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <i class="fa fa-table"></i> Solicitud Abastecimiento:
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTableAHI" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Marca</th>
-                                        <th>Nombre</th>
-                                        <th>Cantidad</th>
-                                        <th>Unidad Medida</th>
-                                        <th>Accion</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <input id="action" name="action" value="create" hidden="hidden">
-                    <div class="form-group">
-                        <label for="observacion">Observacion</label>
-                        <textarea class="form-control" id="observacion" name="observacion" rows="1"></textarea>
-                    </div>
-                    <button id="btnCreateAbastecimiento" class="btn btn-primary" type="submit">Solicitar</button>
-                    <img id="loading" src="${pageContext.request.contextPath}/resources/images/ajax-loader.gif" style="display: none;"/>
                 </div>
             </div>
         </div>

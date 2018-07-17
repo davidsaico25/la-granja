@@ -6,7 +6,13 @@ $(document).ready(function () {
     var dataTableI = $('#dataTableI').DataTable({
         language: {
             url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-        }
+        },
+        columnDefs: [
+            {width: "15%", targets: -2, orderable: false},
+            {width: "10%", targets: -1, orderable: false}
+        ],
+        info: false,
+        lengthChange: false
     });
 
     var dataTableAHI = $('#dataTableAHI').DataTable({
@@ -18,28 +24,18 @@ $(document).ready(function () {
             {data: 'item.marca_item.nombre'},
             {data: 'item.nombre'},
             {data: 'cantidad'},
-            {data: 'item.unidad_medida.simbolo', width: "15%"},
+            {data: 'item.unidad_medida.simbolo', width: "15%", orderable: false},
             {
                 targets: -1,
                 data: null,
                 width: "10%",
+                orderable: false,
                 defaultContent: "<button class='btn btn-link edit' style='padding: 0px'><i class='fa fa-fw fa-edit'></i></button><button class='btn btn-link trash-o' style='padding: 0px'><i class='fa fa-fw fa-trash-o'></i></button>"
             }
-        ]
-    });
-
-    //lista solicitud al hacer click en una fila para modificar o quitar el item
-    $('#dataTableAHI tbody').on('click', 'button.edit', function () {
-        dataTableAHI.$('tr.selected').removeClass('selected');
-        $(this).parents('tr').addClass('selected');
-
-        showAddItemModal(dataTableAHI.row($(this).parents('tr')).data(), true);
-    });
-    $('#dataTableAHI tbody').on('click', 'button.trash-o', function () {
-        dataTableAHI.$('tr.selected').removeClass('selected');
-        $(this).parents('tr').addClass('selected');
-
-        showAddItemModal(dataTableAHI.row($(this).parents('tr')).data(), true);
+        ],
+        info: false,
+        lengthChange: false,
+        searching: false
     });
 
     deshabilitarBotonesAddItems();
@@ -60,11 +56,25 @@ $(document).ready(function () {
     //Cuando se da click en el boton para que muestre modal e ingresar la cantidad del item a solicitar
     $('.btnShowModalAddItem').click(function () {
         let id = $(this).attr("i-id");
-        showAddItemModal(id, false);
+        showModalAddItem(id, false);
+    });
+    
+    //lista solicitud al hacer click en una fila para modificar o quitar el item
+    $('#dataTableAHI tbody').on('click', 'button.edit', function () {
+        dataTableAHI.$('tr.selected').removeClass('selected');
+        $(this).parents('tr').addClass('selected');
+
+        showModalAddItem(dataTableAHI.row($(this).parents('tr')).data(), true);
+    });
+    $('#dataTableAHI tbody').on('click', 'button.trash-o', function () {
+        dataTableAHI.$('tr.selected').removeClass('selected');
+        $(this).parents('tr').addClass('selected');
+
+        showModalAddItem(dataTableAHI.row($(this).parents('tr')).data(), true);
     });
 
     //mostrar modal para ingresar la cantidad del item a solicitar
-    function showAddItemModal(data, modify) {
+    function showModalAddItem(data, modify) {
         if (!modify) {
             $.ajax({
                 method: 'GET',
@@ -124,6 +134,10 @@ $(document).ready(function () {
         dataTableAHI.row.add(ahi).draw(false);
 
         $('#addItemModal').modal('hide');
+        
+        $('html,body').animate({
+            scrollTop: $("#qwerty").offset().top
+        }, 2000);
     });
 
     $("#btnEditAHI").click(function () {

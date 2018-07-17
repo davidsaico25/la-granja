@@ -43,8 +43,6 @@ public class ReadAbastecimientoController extends HttpServlet {
 
         respuesta = AbastecimientoService.read(abastecimiento_id, null, null);
 
-        System.out.println(respuesta.getJson_string());
-
         Abastecimiento abastecimiento = new Gson().fromJson(respuesta.getJsonElement("abastecimiento"), Abastecimiento.class);
 
         request.setAttribute("id", abastecimiento_id);
