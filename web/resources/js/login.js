@@ -12,10 +12,10 @@ $(document).ready(function () {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             data: {
-                'action': 'login',
-                'username': $('#username').val(),
-                'password': $('#password').val(),
-                'getToken': true
+                action: 'login',
+                username: $('#username').val(),
+                password: $('#password').val(),
+                getToken: true
             },
             dataType: 'json',
             beforeSend: function () {
@@ -45,10 +45,10 @@ $(document).ready(function () {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             data: {
-                'action': 'identity',
-                'username': $('#username').val(),
-                'password': $('#password').val(),
-                'getToken': null
+                action: 'identity',
+                username: $('#username').val(),
+                password: $('#password').val(),
+                getToken: null
             },
             dataType: 'json'
         }).done(function (json) {
