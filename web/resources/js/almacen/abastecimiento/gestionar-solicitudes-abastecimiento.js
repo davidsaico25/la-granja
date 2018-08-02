@@ -4,22 +4,17 @@ $(document).ready(function () {
      */
 
     var dataTableA = $('#dataTableA').DataTable({
-        "language": {
-            "loadingRecords": "Please wait - loading..."
+        language: {
+            url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
         },
+        columnDefs: [
+        ],
         columns: [
-            {data: 'id'},
             {data: 'fecha_creacion'},
             {data: 'local_destino.nombre'},
-            {data: 'estado_abastecimiento.nombre'},
-            {
-                targets: -1,
-                data: null,
-                width: "10%",
-                orderable: false,
-                defaultContent: "<button class='btn btn-link edit' style='padding: 0px'><i class='fa fa-fw fa-eye'></i></button>"
-            }
-        ]
+            {data: 'estado_abastecimiento.nombre'}
+        ],
+        info: false
     });
 
     var dataTableAHI = $('#dataTableAHI').DataTable({
@@ -27,8 +22,8 @@ $(document).ready(function () {
             url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
         },
         columnDefs: [
-            {width: "20%", targets: -2},
-            {width: "20%", targets: -1, orderable: false}
+            {targets: -2, width: "20%"},
+            {targets: -1, width: "20%", orderable: false}
         ],
         columns: [
             {data: 'item.marca_item.nombre'},
@@ -51,55 +46,109 @@ $(document).ready(function () {
 
     function cargarDataTableA() {
         $.ajax({
-            method: 'POST',
-            url: 'gestionar.do',
-            data: {
+            method: 'GET',
+            url: la_granja_api_url + '/abastecimiento/get_list_by_estado',
+            headers: {
+                Authorization: localStorage.getItem("token")
             },
             dataType: 'json',
             beforeSend: function () {
             }
         }).done(function (json) {
             console.log(json);
-            console.log(json.listAbastecimiento);
             dataTableA.clear().draw();
             dataTableA.rows.add(json.listAbastecimiento).draw();
         }).fail(function (jqXHR) {
             console.log(jqXHR);
+            //console.log('status: ' + jqXHR.status + '; statusText: ' + jqXHR.statusText + '; message: ' + jqXHR.responseJSON.message);
         }).always(function () {
         });
     }
 
-    $('#dataTableA tbody').on('click', 'button.edit', function () {
-        dataTableA.$('tr.selected').removeClass('selected');
-        $(this).parents('tr').addClass('selected');
+    $('#dataTableA tbody').on('click', 'tr', function () {
+        let abastecimiento = dataTableA.row($(this)).data();
 
-        let abastecimiento = dataTableA.row($(this).parents('tr')).data();
-        console.log(abastecimiento);
+        if (abastecimiento !== undefined) {
+            dataTableA.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
 
-        verDetalle(abastecimiento);
+            dataTableAHI.clear().draw();
+            dataTableAHI.rows.add(abastecimiento.listAbastecimientoHasItem).draw();
+
+            $('#selectEstadoAbastecimiento').val(abastecimiento.estado_abastecimiento_id);
+
+            $('html,body').animate({
+                scrollTop: $("#detalle").offset().top
+            }, 1000);
+        }
     });
 
-    function verDetalle(abastecimiento) {
+    $('#btnUpdateA').click(function () {
+        let abastecimiento = dataTableA.row(dataTableA.$('tr.selected')).data();
+
+        let selectedEstadoAbastecimiento = $('#selectEstadoAbastecimiento').val();
+
+        if (selectedEstadoAbastecimiento == 3) { //Confirmar abastecimiento
+            console.log(JSON.stringify(abastecimiento.listAbastecimientoHasItem));
+            //confirmarAbastecimiento(selectedEstadoAbastecimiento);
+        } else {
+            updateAbastecimiento(selectedEstadoAbastecimiento);
+        }
+    });
+
+    function confirmarAbastecimiento(estadoAbastecimiento) {
         $.ajax({
-            method: 'GET',
-            url: 'gestionar.do',
+            method: 'PUT',
+            url: la_granja_api_url + '/abastecimiento/confirmar/' + abastecimiento.id,
+            headers: {
+                Authorization: localStorage.getItem("token")
+            },
             data: {
-                action: 'read',
-                id: abastecimiento.id
+                observacion: abastecimiento.observacion,
+                estado_abastecimiento_id: estadoAbastecimiento,
+                local_id_origen: abastecimiento.local_id_origen,
+                local_id_destino: abastecimiento.local_id_destino
             },
             dataType: 'json',
             beforeSend: function () {
             }
         }).done(function (json) {
             console.log(json);
-            dataTableAHI.clear().draw();
-            dataTableAHI.rows.add(json.abastecimiento.listAbastecimientoHasItem).draw();
-            $('html,body').animate({
-                scrollTop: $("#detalle").offset().top
-            }, 2000);
         }).fail(function (jqXHR) {
             console.log(jqXHR);
         }).always(function () {
         });
+
+        dataTableAHI.clear().draw();
+        $('#selectEstadoAbastecimiento').val(99);
+        cargarDataTableA();
+    }
+
+    function updateAbastecimiento(estadoAbastecimiento) {
+        $.ajax({
+            method: 'PUT',
+            url: la_granja_api_url + '/abastecimiento/update/' + abastecimiento.id,
+            headers: {
+                Authorization: localStorage.getItem("token")
+            },
+            data: {
+                observacion: abastecimiento.observacion,
+                estado_abastecimiento_id: estadoAbastecimiento,
+                local_id_origen: abastecimiento.local_id_origen,
+                local_id_destino: abastecimiento.local_id_destino
+            },
+            dataType: 'json',
+            beforeSend: function () {
+            }
+        }).done(function (json) {
+            console.log(json);
+        }).fail(function (jqXHR) {
+            console.log(jqXHR);
+        }).always(function () {
+        });
+
+        dataTableAHI.clear().draw();
+        $('#selectEstadoAbastecimiento').val(99);
+        cargarDataTableA();
     }
 });

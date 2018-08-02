@@ -3,13 +3,11 @@
 <t:template-user>
     <jsp:attribute name="head">
         <link href="/la-granja/resources/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+        <link href="/la-granja/resources/vendor/datatables/jquery.dataTables.min.css" rel="stylesheet">
     </jsp:attribute>
     <jsp:attribute name="body">
         <div class="content-wrapper">
             <div class="container-fluid">
-                <c:if test="${message != null}">
-                    ${message}
-                </c:if>
 
                 <h1>Gestionar Solicitudes</h1>
 
@@ -17,7 +15,7 @@
                     <div class="col-sm-12 col-md-6">
                         <div class="card mb-3">
                             <div class="card-header">
-                                <i class="fa fa-table"></i> Lista AHI
+                                <i class="fa fa-table"></i> Lista Abastecimientos:
                                 <button id="btnVisibleTable" type="button" class="btn btn-primary d-block d-sm-none">
                                     Ocultar Tabla
                                 </button>
@@ -27,11 +25,9 @@
                                     <table class="table table-bordered" id="dataTableA" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
                                                 <th>Fecha Creacion</th>
                                                 <th>Local Origen</th>
                                                 <th>Estado</th>
-                                                <th>Accion</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -42,7 +38,22 @@
                     <div id="detalle" class="col-sm-12 col-md-6">
                         <div class="card mb-3">
                             <div class="card-header">
-                                <i class="fa fa-table"></i> Solicitud Abastecimiento:
+                                <i class="fa fa-table"></i> Detalle Abastecimiento:
+                                <div class="form-row align-items-center">
+                                    <div class="col-auto">
+                                        <!--<label for="selectEstadoAbastecimiento">Example select</label>-->
+                                        <select class="custom-select" id="selectEstadoAbastecimiento">
+                                            <option value="99" selected="selected">Seleccione</option>
+                                            <option value="1">Pendiente</option>
+                                            <option value="2">Postergado</option>
+                                            <option value="3">Confirmado</option>
+                                            <option value="4">Cancelado</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button id="btnUpdateA" class="btn btn-primary mb-2">Submit</button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
