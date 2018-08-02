@@ -84,7 +84,7 @@ $(document).ready(function () {
     });
 
     $('#btnUpdateA').click(function () {
-        let abastecimiento = dataTableA.row(dataTableA.$('tr.selected')).data();
+        let abastecimiento = dataTableA.row('tr.selected').data();
 
         let selectedEstadoAbastecimiento = $('#selectEstadoAbastecimiento').val();
 
@@ -92,7 +92,7 @@ $(document).ready(function () {
             console.log(JSON.stringify(abastecimiento.listAbastecimientoHasItem));
             //confirmarAbastecimiento(selectedEstadoAbastecimiento);
         } else {
-            updateAbastecimiento(selectedEstadoAbastecimiento);
+            updateAbastecimiento(abastecimiento, selectedEstadoAbastecimiento);
         }
     });
 
@@ -124,7 +124,7 @@ $(document).ready(function () {
         cargarDataTableA();
     }
 
-    function updateAbastecimiento(estadoAbastecimiento) {
+    function updateAbastecimiento(abastecimiento, estadoAbastecimiento) {
         $.ajax({
             method: 'PUT',
             url: la_granja_api_url + '/abastecimiento/update/' + abastecimiento.id,
