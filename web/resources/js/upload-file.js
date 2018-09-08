@@ -1,15 +1,14 @@
 $(document).ready(function () {
-    var token = localStorage.getItem("token");
     // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
     var previewNode = document.querySelector("#template");
     previewNode.id = "";
     var previewTemplate = previewNode.parentNode.innerHTML;
     previewNode.parentNode.removeChild(previewNode);
 
-    var myDropzone = new Dropzone("div#presentacionInsumoImagen", {// Make the whole body a dropzone
+    var myDropzone = new Dropzone("div#" + div_id, {// Make the whole body a dropzone
         url: imageUploadURL, // Set the url,
         headers: {
-            'Authorization': token
+            'Authorization': localStorage.getItem("token")
         },
         paramName: paramNameFile,
         thumbnailWidth: 80,
@@ -56,7 +55,6 @@ $(document).ready(function () {
     myDropzone.on("complete", function (file) {
         myDropzone.removeFile(file);
         //location.reload();
-        window.location.replace(url);
     });
 
     myDropzone.on("error", function (file, errorMessage) {

@@ -7,9 +7,21 @@ $(document).ready(function () {
         language: {
             url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
         },
-        columnDefs: [
-            {width: "15%", targets: -2, orderable: false},
-            {width: "10%", targets: -1, orderable: false}
+        columns: [
+            {data: 'id', width: "10%"},
+            {data: 'marca_item.nombre'},
+            {data: 'nombre'},
+            {data: 'unidad_medida.simbolo', width: "15%"},
+            {
+                targets: -1,
+                data: null,
+                width: "10%",
+                orderable: false,
+                createdCell: function (cell, cellData, rowData, rowIndex, colIndex) {
+                    $(cell).children('button').attr('i-id', cellData.id);
+                },
+                defaultContent: "<button class='btn btn-link add' style='padding: 0px'><i class='fa fa-fw fa-plus'></i></button>"
+            }
         ],
         info: false,
         lengthChange: false
@@ -23,10 +35,13 @@ $(document).ready(function () {
         columns: [
             {data: 'item.marca_item.nombre'},
             {data: 'item.nombre'},
-            {data: 'cantidad'},
-            {data: 'item.unidad_medida.simbolo', width: "15%", orderable: false},
             {
-                targets: -1,
+                data: null,
+                createdCell: function (cell, cellData, rowData, rowIndex, colIndex) {
+                    $(cell).html(cellData.cantidad + ' ' + cellData.item.unidad_medida.simbolo);
+                }
+            },
+            {
                 data: null,
                 width: "10%",
                 orderable: false,
@@ -38,7 +53,31 @@ $(document).ready(function () {
         searching: false
     });
 
-    deshabilitarBotonesAddItems();
+    cargardataTableI();
+
+    /*
+     * FIN CARGAR_VISTA
+     */
+
+    function cargardataTableI() {
+        $.ajax({
+            method: "GET",
+            url: la_granja_api_url + '/item/get_list',
+            headers: {
+                Authorization: localStorage.getItem('token'),
+            },
+            dataType: 'json',
+            beforeSend: function () {
+            }
+        }).done(function (json) {
+            //console.log(json);
+            let listItem = json.listItem;
+            dataTableI.rows.add(listItem).draw();
+            deshabilitarBotonesAddItems();
+        }).fail(function (jqXHR) {
+            console.log(jqXHR);
+        });
+    }
 
     function deshabilitarBotonesAddItems() {
         $('table button').removeAttr('disabled');
@@ -49,94 +88,88 @@ $(document).ready(function () {
         });
     }
 
-    /*
-     * FIN CARGAR_VISTA
-     */
+    $('#dataTableI tbody').on('click', 'button.add', function () {
+        dataTableI.$('tr.selected').removeClass('selected');
+        $(this).parents('tr').addClass('selected');
 
-    //Cuando se da click en el boton para que muestre modal e ingresar la cantidad del item a solicitar
-    $('.btnShowModalAddItem').click(function () {
-        let id = $(this).attr("i-id");
-        showModalAddItem(id, false);
+        let ahi = {
+            item: dataTableI.row($(this).parents('tr')).data(),
+            cantidad: 0
+        };
+
+        showModalAddItem(ahi, true);
     });
-    
+
     //lista solicitud al hacer click en una fila para modificar o quitar el item
     $('#dataTableAHI tbody').on('click', 'button.edit', function () {
         dataTableAHI.$('tr.selected').removeClass('selected');
         $(this).parents('tr').addClass('selected');
 
-        showModalAddItem(dataTableAHI.row($(this).parents('tr')).data(), true);
+        showModalAddItem(dataTableAHI.row($(this).parents('tr')).data(), false);
     });
+
     $('#dataTableAHI tbody').on('click', 'button.trash-o', function () {
         dataTableAHI.$('tr.selected').removeClass('selected');
         $(this).parents('tr').addClass('selected');
 
-        showModalAddItem(dataTableAHI.row($(this).parents('tr')).data(), true);
+        let ahi = dataTableAHI.row($(this).parents('tr')).data();
+
+        let listAHI = JSON.parse(localStorage.getItem("listAHI"));
+        $.each(listAHI, function (index, value) {
+            if (value.item.id == ahi.item.id) {
+                listAHI.splice(index, 1);
+                return false;
+            }
+        });
+        localStorage.setItem("listAHI", JSON.stringify(listAHI));
+
+        dataTableAHI.row('.selected').remove().draw();
+
+        $("[i-id='" + ahi.item.id + "']").removeAttr('disabled');
     });
 
     //mostrar modal para ingresar la cantidad del item a solicitar
-    function showModalAddItem(data, modify) {
-        if (!modify) {
-            $.ajax({
-                method: 'GET',
-                url: 'create.do',
-                data: {
-                    'action': 'read-i',
-                    'id': data
-                },
-                dataType: 'json'
-            }).done(function (json) {
-                //console.log(json);
-                if (json.status == 200) {
-                    let item = JSON.parse(json.json_string).item;
-                    $('#i_id').val(item.id);
-                    $('#unidad_medida_simbolo').html(item.unidad_medida.simbolo);
-                    $('#i_json').val(JSON.stringify(item));
-                    $('#ahi_cantidad').val('');
-                    $('#btnAddAHI').removeAttr('hidden');
-                    $('#btnEditAHI').attr('hidden', 'hidden');
-                    $('#btnDeleteAHI').attr('hidden', 'hidden');
-                    $('#addItemModal').modal('show');
-                } else {
-                    console.log('else');
-                }
-            }).fail(function (jqXHR) {
-                console.log(jqXHR);
-            });
+    function showModalAddItem(data, add = true) {
+        $('#i_id').val(data.item.id);
+        $('#unidad_medida_simbolo').html(data.item.unidad_medida.simbolo);
+        $('#i_json').val(JSON.stringify(data.item));
+        $('#ahi_cantidad').val(data.cantidad);
+        //$('#btnAddAHI').attr('hidden', 'hidden');
+        //$('#btnEditAHI').removeAttr('hidden');
+        if (add) {
+            $('#btnAddAHI').removeAttr('hidden');
+            $('#btnEditAHI').attr('hidden', 'hidden');
         } else {
-            $('#i_id').val(data.item.id);
-            $('#unidad_medida_simbolo').html(data.item.unidad_medida.simbolo);
-            $('#i_json').val(JSON.stringify(data.item));
-            $('#ahi_cantidad').val(data.cantidad);
             $('#btnAddAHI').attr('hidden', 'hidden');
             $('#btnEditAHI').removeAttr('hidden');
-            $('#btnDeleteAHI').removeAttr('hidden');
-            $('#addItemModal').modal('show');
         }
+        $('#addItemModal').modal('show');
     }
 
     //Agregar item a la solicitud de abastecimiento
     $("#btnAddAHI").click(function () {
-        let listAHI;
-        if (localStorage.getItem("listAHI") === null) {
-            listAHI = [];
-        } else {
-            listAHI = JSON.parse(localStorage.getItem("listAHI"));
-        }
+        let listAHI = [];
 
-        let ahi = {};
-        ahi.item = JSON.parse($('#i_json').val());
-        ahi.cantidad = $('#ahi_cantidad').val();
+        if (localStorage.getItem("listAHI") !== null)
+            listAHI = JSON.parse(localStorage.getItem("listAHI"));
+
+        let ahi = {
+            item: JSON.parse($('#i_json').val()),
+            cantidad: $('#ahi_cantidad').val()
+        };
         listAHI.push(ahi);
         localStorage.setItem("listAHI", JSON.stringify(listAHI));
 
         $("[i-id='" + ahi.item.id + "']").attr('disabled', 'disabled');
 
-        dataTableAHI.row.add(ahi).draw(false);
+        dataTableAHI.row.add(ahi).draw();
+
+        dataTableI.$('tr.selected').removeClass('selected');
 
         $('#addItemModal').modal('hide');
-        
+
         $('html,body').animate({
-            scrollTop: $("#qwerty").offset().top
+            scrollTop: $("#solicitudAbastecimiento").offset().top
         }, 2000);
     });
 
@@ -148,52 +181,41 @@ $(document).ready(function () {
         $.each(listAHI, function (index, value) {
             if (value.item.id == id) {
                 value.cantidad = cantidad;
+                dataTableAHI.row('.selected').data(value).draw();
                 return false;
             }
         });
         localStorage.setItem("listAHI", JSON.stringify(listAHI));
 
-        let ahi = dataTableAHI.row('.selected').data();
-        ahi.cantidad = cantidad;
-        dataTableAHI.row('.selected').data(ahi).draw();
+        dataTableAHI.$('tr.selected').removeClass('selected');
 
         $('#addItemModal').modal('hide');
     });
 
-    $("#btnDeleteAHI").click(function () {
-        id = $('#i_id').val();
-
-        let listAHI = JSON.parse(localStorage.getItem("listAHI"));
-        $.each(listAHI, function (index, value) {
-            if (value.item.id == id) {
-                listAHI.splice(index, 1);
-                return false;
-            }
-        });
-        localStorage.setItem("listAHI", JSON.stringify(listAHI));
-
-        dataTableAHI.row('.selected').remove().draw(false);
-
-        $("[i-id='" + id + "']").removeAttr('disabled');
-
-        $('#addItemModal').modal('hide');
+    $('#formCreateAbastecimiento').submit(function (event) {
+        crearAbastecimiento();
+        return false;
     });
 
-    //Registrar la solicitud de abastecimiento
-    $("#btnCreateAbastecimiento").click(function () {
+    function crearAbastecimiento() {
         if (dataTableAHI.data().length == 0) {
             alert('tiene que seleccionar items para registrar la solicitud');
             return;
         }
         let local_id_destino = JSON.parse(localStorage.getItem("identity")).local.id;
+
         $.ajax({
             method: 'POST',
-            url: 'create.do',
+            url: la_granja_api_url + '/abastecimiento/create',
+            headers: {
+                Authorization: localStorage.getItem('token'),
+            },
             data: {
-                'action': $('#action').val(),
-                'local_id_destino': local_id_destino,
-                'observacion': $('#observacion').val(),
-                'listAHI': localStorage.getItem("listAHI")
+                observacion: $('#observacion').val(),
+                estado_abastecimiento_id: 1,
+                local_id_origen: 1,
+                local_id_destino: local_id_destino,
+                json_abastecimiento_has_item: localStorage.getItem("listAHI")
             },
             dataType: 'json',
             beforeSend: function () {
@@ -203,24 +225,24 @@ $(document).ready(function () {
             }
         }).done(function (json) {
             //console.log(json);
-            if (json.status == 200) {
-                let abastecimiento = JSON.parse(json.json_string).abastecimiento;
+            let abastecimiento = json.abastecimiento;
 
-                $('#observacion').val('');
-                dataTableAHI.clear().draw();
-                localStorage.removeItem("listAHI");
+            $('#observacion').val('');
+            dataTableAHI.clear().draw();
+            localStorage.removeItem("listAHI");
 
-                $(location).attr('href', '/la-granja/almacen/abastecimiento/read.do?id=' + abastecimiento.id);
-            } else {
-                console.log('else');
-            }
+            $(location).attr('href', '/la-granja/almacen/abastecimiento/leer.jsp?id=' + abastecimiento.id);
         }).fail(function (jqXHR) {
-            console.log('fail');
             console.log(jqXHR);
         }).always(function () {
             deshabilitarBotonesAddItems();
             $('#btnCreateAbastecimiento').removeAttr('disabled');
             $('#loading').hide();
         });
+    }
+
+    //Registrar la solicitud de abastecimiento
+    $("#btnCreateAbastecimiento").click(function () {
+
     });
 });

@@ -1,13 +1,13 @@
 $(document).ready(function () {
     $('#formLogIn').submit(function (event) {
         login();
-        event.preventDefault();
+        return false;
     });
 
     function login() {
         $.ajax({
             method: "POST",
-            url: "usuario.do",
+            url: la_granja_api_url + '/usuario/login',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
@@ -40,7 +40,7 @@ $(document).ready(function () {
     function identity() {
         $.ajax({
             method: "POST",
-            url: "usuario.do",
+            url: la_granja_api_url + '/usuario/login',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },

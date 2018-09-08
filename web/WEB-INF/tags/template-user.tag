@@ -46,7 +46,7 @@
                         </a>
                         <ul class="sidenav-second-level collapse" id="collapseAlmacen">
                             <li>
-                                <a href="/la-granja/almacen/grupo-item/list.do">Admin. insumos</a>
+                                <a href="/la-granja/almacen/grupo-item/list.jsp">Admin. insumos</a>
                             </li>
                             <li>
                                 <a href="/la-granja/almacen/listLocalHasItem.do">Inventario</a>
@@ -55,7 +55,7 @@
                                 <a href="/la-granja/administrar/listLocal.do">Locales</a>
                             </li>
                             <li>
-                                <a href="/la-granja/almacen/abastecimiento/create.do">Crear Abastecimiento</a>
+                                <a href="/la-granja/almacen/abastecimiento/crear.jsp">Crear Abastecimiento</a>
                             </li>
                             <li>
                                 <a href="/la-granja/almacen/abastecimiento/gestionar.do">Administrar Solicitudes Abastecimiento</a>
@@ -286,9 +286,12 @@
         <script src="/la-granja/resources/vendor/jquery-easing/jquery.easing.min.js"></script>
         <script src="/la-granja/resources/js/sb-admin.min.js"></script>
         
+        <script src="/la-granja/resources/js/jquery.geturlparam.js"></script>
+        
         <script type="text/javascript" src="/la-granja/resources/js/default-foot.js"></script>
         
         <script>
+            var la_granja_url = '${pageContext.request.contextPath}';
             var la_granja_api_url = '${initParam.la_granja_api_url}';
         </script>
 

@@ -9,42 +9,24 @@
     <jsp:attribute name="body">
         <div class="content-wrapper">
             <div class="container-fluid">
-
-                <a class="btn btn-primary" href="/la-granja/almacen/presentacion-item/list.do?item_id=${item_id}">Atras</a>
-
                 <div class="row">
                     <div class="col-md-6">
-                        <c:if test="${message != null}">
-                            <div class="alert alert-${status}" role="alert">
-                                <h5>${message}</h5>
-                                <c:if test="${errors != null}">
-                                    <c:forEach items="${errors}" var="error">
-                                        ${error}<br/>
-                                    </c:forEach>
-                                </c:if>
-                            </div>
-                        </c:if>
-
                         <form id="formCRUD" action="crud.do" method="POST" accept-charset=utf-8>
-                            <input name="action" value="${action}" hidden="hidden">
-                            <input name="item_id" value="${item_id}" hidden="hidden">
-                            <input name="presentacion_item_id" value="${presentacion_item_id}" hidden="hidden">
-                            <input name="imagen" value="${imagen}" hidden="hidden">
                             <div class="form-group">
                                 <label for="codigo_barra">Codigo Barra</label>
-                                <input class="form-control" id="codigo_barra" name="codigo_barra" value="${map.codigo_barra != null ? map.codigo_barra : presentacionItem.codigo_barra}" type="text" placeholder="Codigo Barra" ${presentacion_item_id != null ? 'readonly' : ''}>
+                                <input class="form-control" id="codigo_barra" name="codigo_barra" type="text" placeholder="Codigo Barra">
                             </div>
                             <div class="form-group">
                                 <label for="nombre">Nombre</label>
-                                <input class="form-control" id="nombre" name="nombre" value="${map.nombre != null ? map.nombre : presentacionItem.nombre}" type="text" placeholder="Nombre">
+                                <input class="form-control" id="nombre" name="nombre" type="text" placeholder="Nombre">
                             </div>
                             <div class="form-group">
                                 <label for="rendimiento">Rendimiento</label>
-                                <input class="form-control" id="rendimiento" name="rendimiento" value="${map.rendimiento != null ? map.rendimiento : presentacionItem.rendimiento}" type="number" placeholder="Rendimiento">
+                                <input class="form-control" id="rendimiento" name="rendimiento" type="number" placeholder="Rendimiento">
                             </div>
                             <div class="form-group">
                                 <label for="precio_costo">Precio Costo</label>
-                                <input class="form-control" id="precio_costo" name="precio_costo" value="${map.precio_costo != null ? map.precio_costo : presentacionItem.precio_costo}" type="number" placeholder="Precio Costo">
+                                <input class="form-control" id="precio_costo" name="precio_costo" type="number" placeholder="Precio Costo">
                             </div>
                             <button id="btnCreatePresentacionItem" class="btn btn-primary" type="submit">Guardar</button>
                             <img id="loading" src="/la-granja/resources/images/ajax-loader.gif" style="display: none;"/>
@@ -52,9 +34,9 @@
                     </div>
 
 
-                    <div class="col-md-6" ${presentacion_item_id == null ? "hidden" : ''}>
+                    <div id="imageSection" class="col-md-6">
                         <div id="presentacionInsumoImagen">
-                            <img src="${initParam.la_granja_api_url}/presentacion_item/get_image/${imagen}" class="img-fluid"/>
+                            <img id="img_presentacion_item" src="" class="img-fluid"/>
                         </div>
 
                         <div id="actions" class="row">
@@ -121,16 +103,17 @@
         </div>
     </jsp:attribute>
     <jsp:attribute name="scripts">
-        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/almacen/presentacion-item/crud-presentacion-item.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/almacen/presentacion-item/crud.js"></script>
 
         <script src="${pageContext.request.contextPath}/resources/vendor/dropzone/js/dropzone.js"></script>
         
         <script type="text/javascript">
-            var imageUploadURL = la_granja_api_url + "/presentacion_item/upload_image/${presentacion_item_id}";
+            //para cargar la imagen
             var div_id = 'presentacionInsumoImagen';
+            var imageUploadURL = la_granja_api_url + "/presentacion_item/upload_image/" + $.getURLParam("id");
             var paramNameFile = "image";
             var acceptedFile = "image/*";
-            var url_on_upload_complete = "${pageContext.request.contextPath}/almacen/presentacion-item/crud.do?id=${presentacion_item_id}";
+            var url_on_upload_complete = "${pageContext.request.contextPath}/almacen/presentacion-item/crud.jsp?id=" + $.getURLParam("id");
         </script>
         <script src="${pageContext.request.contextPath}/resources/js/upload-file.js"></script>
     </jsp:attribute>

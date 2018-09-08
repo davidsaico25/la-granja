@@ -7,10 +7,7 @@
     <jsp:attribute name="body">
         <div class="content-wrapper">
             <div class="container-fluid">
-                <c:if test="${message != null}">
-                    ${message}
-                </c:if>
-
+                
                 <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-6">
                         <div class="card mb-3">
@@ -22,33 +19,20 @@
                                     <table class="table table-bordered" id="dataTableI" style="width:100%">
                                         <thead>
                                             <tr>
+                                                <th>ID</th>
                                                 <th>Marca</th>
                                                 <th>Nombre</th>
                                                 <th>Unidad Medida</th>
                                                 <th>Accion</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <c:forEach items="${listItem}" var="i">
-                                                <tr>
-                                                    <td>${i.id} ${i.marca_item.nombre}</td>
-                                                    <td>${i.nombre}</td>
-                                                    <td>${i.unidad_medida.simbolo}</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-link btnShowModalAddItem" i-id="${i.id}" style="padding: 0px">
-                                                            <i class="fa fa-fw fa-plus"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-sm-12 col-md-12 col-lg-6" id="qwerty">
+                    <div class="col-sm-12 col-md-12 col-lg-6" id="solicitudAbastecimiento">
                         <div class="card mb-3">
                             <div class="card-header">
                                 <i class="fa fa-table"></i> Solicitud Abastecimiento:
@@ -61,7 +45,6 @@
                                                 <th>Marca</th>
                                                 <th>Nombre</th>
                                                 <th>Cantidad</th>
-                                                <th>Unidad Medida</th>
                                                 <th>Accion</th>
                                             </tr>
                                         </thead>
@@ -69,13 +52,14 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <input id="action" name="action" value="create" hidden="hidden">
-                                <div class="form-group">
-                                    <label for="observacion">Observacion</label>
-                                    <textarea class="form-control" id="observacion" name="observacion" rows="1"></textarea>
-                                </div>
-                                <button id="btnCreateAbastecimiento" class="btn btn-primary" type="submit">Solicitar</button>
-                                <img id="loading" src="${pageContext.request.contextPath}/resources/images/ajax-loader.gif" style="display: none;"/>
+                                <form id="formCreateAbastecimiento">
+                                    <div class="form-group">
+                                        <label for="observacion">Observacion</label>
+                                        <textarea class="form-control" id="observacion" name="observacion" rows="1"></textarea>
+                                    </div>
+                                    <button id="btnCreateAbastecimiento" class="btn btn-primary" type="submit">Solicitar</button>
+                                    <img id="loading" src="${pageContext.request.contextPath}/resources/images/ajax-loader.gif" style="display: none;"/>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -106,7 +90,6 @@
                                             </div>
                                             <button id="btnAddAHI" class="btn btn-primary">Agregar</button>
                                             <button id="btnEditAHI" class="btn btn-primary">Guardar</button>
-                                            <button id="btnDeleteAHI" class="btn btn-danger">Eliminar</button>
                                         </div>
                                     </div>
                                 </div>
